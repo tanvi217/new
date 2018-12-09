@@ -1,0 +1,148 @@
+
+{% extends 'community/base/login-navbar.html' %}
+    {% block title %}group detail{% endblock %}
+    {% block content %}
+            {% for conten in content %}
+
+                <h3>title :  {{ conten.title }}</h3>
+                <h3>type :  {{ conten.type }}</h3>
+                    <h3>location :  lat:<span id="lat1">{{ conten.lat }}</span>, lon:<span id="lon1">{{ conten.lon }}</span></h3>
+                <h3>address :  {{ conten.address }}</h3>
+                <h3>members :  {{ conten.number }}</h3>
+                <h3>date :  {{ conten.date }}</h3>
+
+            {% endfor %}
+            <center>
+                {% if message %}
+                    {{ message }}
+                {% endif %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="custom-control custom-radio">
+                    yes: <input type="radio" name="choice" value="yes" class="custom-control-input">
+                    no: <input type="radio" name="choice" value="no" class="custom-control-input"><br><br>
+                    <button type="submit" class="btn btn-success">submit</button>
+                    </div>
+                   </center>
+
+
+                    <br>
+<center><div id="map" style="width: 80%; height: 45%;"></div></center><br>
+<center>
+    <h3>comment</h3> <input type="textarea" name="comment" class="form-control" rows="5" style="width:80%" maxlength="500"><br>
+
+                            <button type="submit" class="btn btn-success">submit</button><br><br></center>
+
+
+                </form>
+    <div class="table-responsive">
+        <center>
+    <table border="1" style="width:80%" class="table table-striped table-bordered table-hover">
+            <tr>
+                <th>Comments
+                </th>
+            </tr>
+            {% for i in comments %}
+            <tr>
+                <td>
+                    {{ i.comment }}
+                </td>
+
+
+            </tr>
+
+            {% endfor %}
+        </table>
+        </center>
+    </div>
+        <script>
+    // Initialize and add the map
+    function initMap() {
+        var la = document.getElementById('lat1').innerHTML;
+        var lo = document.getElementById('lon1').innerHTML;
+
+            var latlng = {lat: parseFloat(la), lng: parseFloat(lo)};
+      var loc = {lat: parseFloat(la), lng: parseFloat(lo)};
+      // The map, centered at Uluru
+      var map = new google.maps.Map(
+          document.getElementById('map'), {zoom: 14, center: loc});
+      // The marker, positioned at Uluru
+      var marker = new google.maps.Marker({position: loc, map: map});
+    }
+        </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoxHIV4EUz3PsPOwB_ehuLLDu4OE0ELLc&callback=initMap">
+    </script>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>detail page</title>-->
+    <!--<style>-->
+       <!--/* Set the size of the div element that contains the map */-->
+      <!--#map {-->
+        <!--height: 400px;  /* The height is 400 pixels */-->
+        <!--width: 100%;  /* The width is the width of the web page */-->
+       <!--}-->
+    <!--</style>-->
+<!--</head>-->
+<!--<body>-->
+        <!--{% for conten in content %}-->
+
+    <!--<h3>title :  {{ conten.title }}</h3>-->
+    <!--<h3>type :  {{ conten.type }}</h3>-->
+        <!--<h3>location :  lat:<span id="lat1">{{ conten.lat }}</span>, lon:<span id="lon1">{{ conten.lon }}</span></h3>-->
+    <!--<h3>address :  {{ conten.address }}</h3>-->
+    <!--<h3>members :  {{ conten.number }}</h3>-->
+    <!--<h3>date :  {{ conten.date }}</h3>-->
+
+        <!--{% endfor %}-->
+            <!--{% if message %}-->
+                <!--{{ message }}-->
+            <!--{% endif %}-->
+            <!--<form method="POST">-->
+                <!--{% csrf_token %}-->
+                <!--<center>-->
+
+                <!--yes: <input type="radio" name="choice" value="yes"><br><br>-->
+                <!--no: <input type="radio" name="choice" value="no"><br><br>-->
+                <!--<button type="submit">submit</button>-->
+                 <!--</center>-->
+
+
+<!--<br><br>-->
+<!--<div id="map"></div>-->
+        <!--comment <input type="text" name="comment" maxlength="500"><br><br>-->
+        <!--<button type="submit">submit</button><br><br>-->
+
+        <!--</form>-->
+
+    <!--<script>-->
+<!--// Initialize and add the map-->
+<!--function initMap() {-->
+    <!--var la = document.getElementById('lat1').innerHTML;-->
+	<!--var lo = document.getElementById('lon1').innerHTML;-->
+
+        <!--var latlng = {lat: parseFloat(la), lng: parseFloat(lo)};-->
+  <!--var loc = {lat: parseFloat(la), lng: parseFloat(lo)};-->
+  <!--// The map, centered at Uluru-->
+  <!--var map = new google.maps.Map(-->
+      <!--document.getElementById('map'), {zoom: 14, center: loc});-->
+  <!--// The marker, positioned at Uluru-->
+  <!--var marker = new google.maps.Marker({position: loc, map: map});-->
+<!--}-->
+    <!--</script>-->
+    <!--&lt;!&ndash;Load the API from the specified URL-->
+    <!--* The async attribute allows the browser to render the page while the API loads-->
+    <!--* The key parameter will contain your own API key (which is not needed for this tutorial)-->
+    <!--* The callback parameter executes the initMap() function-->
+    <!--&ndash;&gt;-->
+    <!--<script async defer-->
+    <!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoxHIV4EUz3PsPOwB_ehuLLDu4OE0ELLc&callback=initMap">-->
+    <!--</script>-->
+
+<!--</body>-->
+
+<!--</html>-->
+
+{% endblock %}

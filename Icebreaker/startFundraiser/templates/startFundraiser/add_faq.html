@@ -1,0 +1,21 @@
+{% extends 'startFundraiser/home.html' %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block bg_img %}
+<section class="sec1">
+
+    <img src="{% static 'startFundraiser/images/bg_2.jpg' %}">
+
+</section>
+{% endblock %}
+
+{% block content %}
+<br><br><br><br><br><br>
+    <h1>FAQs</h1>
+    <form method="POST" class="post-form" style="margin-left: 20px; margin-right: 20px;">{% csrf_token %}
+        {% crispy form %}
+        <button type="submit" class="save btn btn-default">Add</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if c == 1 %}
+    <h1>Details of query</h1>
+   {% for temp in  context %}
+<div style="font-size:20px;" >
+        Name:{{ temp.name }}<br>
+        Email id: {{ temp.email }}<br>
+        Asked Question:{{ temp.question_text }}<br>
+</div>
+{% endfor %}
+
+
+    <h2>Answer:</h2>
+
+    <form method="POST">
+       {% csrf_token %}
+
+        <textarea rows="4" cols="50" name="answer" id="answer">
+
+        </textarea>
+        <br>
+     {% for temp in  context %}
+         <h3>Email:</h3><br>
+     <input type="text" name="email" value="{{ temp.email }}">
+      <br>
+
+        {% endfor %}
+     <br>
+     <div>
+         <input type="submit"  value="send"  >
+   <!-- <input type="button" id="buttonId" name="_mail" value="Enviar Mail">-->
+</div>
+    </form>
+{% else %}
+<h1>answer sent</h1>
+{% endif %}
+</body>
+</html>

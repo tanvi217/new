@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- meta tags -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <!-- Google fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel="stylesheet">
+        <title>{% block title %}IceBreaker{% endblock %}</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static 'startFundraiser/style.css' %}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <!--- Ajax CDNs --->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    </head>
+
+    <body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'startFundraiser:home' %}" style="color: #d39e00">ice<strong>Breaker</strong></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+                </button>
+                <div class="collapse navbar-collapse" id="ftco-nav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item" ><a href="{% url 'startFundraiser:start_campaign' %}" class="nav-link">Start Fundraiser</a></li>
+                        <li class="nav-item" ><a href="{% url 'startFundraiser:start_campaign' %}" class="nav-link">Volunteer</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{% url 'startFundraiser:campaigns' %}" role="button" aria-haspopup="true" aria-expanded="false">Explore</a>
+                                    <div class="dropdown-menu">
+                                      <a class="dropdown-item" href="{% url 'startFundraiser:campaigns' %}">Campaigns</a>
+                                      <a class="dropdown-item" href="{% url 'startFundraiser:creative' %}">Creative</a>
+                                      <a class="dropdown-item" href="{% url 'startFundraiser:social' %}">Social</a>
+                                      <a class="dropdown-item" href="{% url 'marketplace:products_blog' %}">Marketplace</a>
+                                      <a class="dropdown-item" href="{% url 'startFundraiser:tech' %}">Tech &amp; Innovation</a>
+                                      <div class="dropdown-divider"></div>
+                                      <a class="dropdown-item" href="#">Communities</a>
+                                    </div>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{% url 'startFundraiser:campaigns' %}" role="button" aria-haspopup="true" aria-expanded="false">Howdy {{ request.user }}!</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">My Campaigns</a>
+                                    <a class="dropdown-item" href="#">My Contributions</a>
+                                    <a class="dropdown-item" href="#">Profile</a>
+                                    <a class="dropdown-item" href="{% url 'register:user_logout' %}">Logout</a>
+                                </div>
+                        </li>
+                        {% else %}
+                        <li class="nav-item"><a href="{% url 'register:user_register' %}" class="nav-link">SignUp</a></li>
+                        <li class="nav-item"><a href="{% url 'register:user_login' %}" class="nav-link">Login</a></li>
+                        {% endif%}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Header Ends -->
+
+    {% block content %}
+        <!--Preloader-->
+        <div id="preloader">
+            <div id="status">&nbsp;</div>
+        </div>
+
+        <!-- Home -->
+        <section id="home">
+            <!-- Background Video -->
+            <video id="home-bg-video" poster="{% static 'startFundraiser/images/help.jpg' %}" autoplay loop muted>
+                <source src="{% static 'startFundraiser/videos/helping.mp4' %}" type="video/mp4">
+            </video>
+
+            <!-- Overlay -->
+            <div id="home-overlay"></div>
+
+        <!-- Overlay -->
+        <div id="home-content" class="text-center">
+            <div id ="home-content-inner">
+                <div id="home-heading">
+
+                    <h1 id="home-heading-1"><span>Ice<strong>Breaker</strong></span></h1>
+                    <br>
+                    <h1 id="home-heading-2">Make your ideas live!</h1>
+                    <br><br><br>
+                </div>
+                <div id="home-btn">
+                    <a class="btn btn-general btn-home" href="{% url 'startFundraiser:campaigns' %}" title="Explore" role="button">Explore</a>
+                </div>
+            </div>
+        </div>
+        </section>
+
+
+  <div class="site-section">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-md-4">
+          <div class="media block-6">
+            <div class="icon"><span class="flaticon-heart-box"></span></div>
+            <div class="media-body">
+              <h3 class="heading">Shop</h3>
+              <p>Get your hands on the most innovative and clever products.</p>
+              <p><a href="#">Shop</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="media block-6">
+            <div class="icon"><span class="flaticon-donate"></span></div>
+            <div class="media-body">
+              <h3 class="heading">Contribute</h3>
+              <p>Support campaigns.</p>
+              <p><a href="#">Support It</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="media block-6">
+            <div class="icon"><span class="flaticon-people"></span></div>
+            <div class="media-body">
+              <h3 class="heading">We Need Volunteers</h3>
+              <p>Form your own community and also volunteer.</p>
+              <p><a href="#">Volunteer</a></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div> <!-- .site-section -->
+
+
+    {% endblock %}
+
+         <script type="text/javascript">
+          $(document).ready(function(event){
+            $(document).on('click','#like',function(event){
+              event.preventDefault();
+              var id = {{ campaign1.id }};
+              $.ajax({
+                type: 'POST',
+                url: '{% url "startFundraiser:like_camp" %}',
+                data: {'id':id, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                  $('#like-section').html(response['form'])
+                  console.log($('#like-section').html(response['form']));
+                },
+                error: function(rs, e){
+                  console.log(rs.responseText);
+                },
+              });
+            });
+          });
+        </script>
+	<script src="{% static 'startFundraiser/js/jquery.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{% static 'startFundraiser/js/script.js' %}"></script>
+    {% block custom_js %}{% endblock %}
+    </body>
+</html>

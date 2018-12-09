@@ -1,0 +1,10 @@
+{% extends 'startFundraiser/home.html' %}
+
+{% block content %}
+    <h1>New update</h1>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Add</button>
+    </form>
+{% endblock %}

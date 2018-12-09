@@ -1,0 +1,11 @@
+{% extends 'testimony/base1.html' %}
+{% block content %}
+
+  <form action="{% url 'testimony:testi' %}" method="post">
+    {% csrf_token %}
+    {{ testimony_form.as_p }}
+
+    <input type="submit" value="save it" class="btn btn-outline-success">
+
+  </form>
+{% endblock %}

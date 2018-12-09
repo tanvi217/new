@@ -1,0 +1,150 @@
+
+{% extends 'startFundraiser/home.html' %}
+{% block title %}Start a Campaign{% endblock %}
+{% load widget_tweaks %}
+
+{% block content %}
+<br><br><br><br><br><br>
+<h1 style="width:80%;margin:auto;">Start Your Campaign!</h1>
+
+<p style="width:80%;margin:auto;">Introduce your campaign providing fundamental details.</p><br><br>
+
+{% if error_message %}
+    {% for key, value in error_message.items %}
+    <p style="width:80%;margin:auto;color:darkred"><strong>{{ value }}!</strong></p>
+    {% endfor %}
+    <br><br>
+{% endif %}
+
+  <form method="post" enctype="multipart/form-data" id="campaign_form" action="#">
+    {% csrf_token %}
+    <div style="width:80%;margin:auto;">
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+        <h6>{{ field.help_text }} </h6>
+        {% render_field field|add_class:'form-control custom-class' placeholder=field.placeholder %}
+        {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      <br><br><br>
+    {% endfor %}
+    </div>
+
+    <hr>
+
+   {{ formset.management_form }}
+    {% for form in formset %}
+        <div style="width:80%;margin:auto;">
+        {% for field in form %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+            <h6>{{ field.help_text }} </h6>
+            {% render_field field|add_class:'form-control custom-class' placeholder=field.placeholder %}
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <br><br><br>
+        {% endfor %}
+                    <div class="input-group-append">
+                        <button class="btn btn-success add-form-row">+</button>
+                    </div>
+        </div>
+    {% endfor %}
+
+    <div class="form-group"style="width:80%;margin:auto;">
+      <button type="submit" class="btn-general" style="align-content: center; background-color: #d39e00; font-family: sans-serif">
+        <span class="glyphicon glyphicon-pushpin"></span> Launch Your Campaign!
+      </button><br><br>
+    </div>
+
+  </form>
+
+  <script>
+
+$(document).ready(function() {
+    $("#campaign_form").submit(function(event) {
+       event.preventDefault();
+       $.ajax({ data: $(this).serialize(),
+                type: $(this).attr('method'),
+                url: $(this).attr('action'),
+                success: function(response) {
+                     console.log(response);
+                     if(response['success']) {
+                         $("#feedbackmessage").html("<div class='alert alert-success'>
+                                       Succesfully created campaign!</div>");
+                         $("#feedbackform").addClass("hidden");
+                     }
+                     if(response['error']) {
+                         $("#feedbackmessage").html("<div class='alert alert-danger'>" +
+			                   response['error']['comment'] +"</div>");
+                     }
+                },
+                error: function (request, status, error) {
+                     console.log(request.responseText);
+                }
+       });
+   });
+})
+</script>
+{% endblock %}
+
+{% block custom_js %}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script type="text/javascript">
+function updateElementIndex(el, prefix, ndx) {
+    var id_regex = new RegExp('(' + prefix + '-\\d+)');
+    var replacement = prefix + '-' + ndx;
+    if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+    if (el.id) el.id = el.id.replace(id_regex, replacement);
+    if (el.name) el.name = el.name.replace(id_regex, replacement);
+}
+function cloneMore(selector, prefix) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+    newElement.find(':input').each(function() {
+        var name = $(this).attr('name')
+        if(name) {
+            name = name.replace('-' + (total-1) + '-', '-' + total + '-');
+            var id = 'id_' + name;
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        }
+    });
+    total++;
+    $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+    var conditionRow = $('.form-row:not(:last)');
+    conditionRow.find('.btn.add-form-row')
+    .removeClass('btn-success').addClass('btn-danger')
+    .removeClass('add-form-row').addClass('remove-form-row')
+    .html('-');
+    return false;
+}
+function deleteForm(prefix, btn) {
+    var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+    if (total > 1){
+        btn.closest('.form-row').remove();
+        var forms = $('.form-row');
+        $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+        for (var i=0, formCount=forms.length; i<formCount; i++) {
+            $(forms.get(i)).find(':input').each(function() {
+                updateElementIndex(this, prefix, i);
+            });
+        }
+    }
+    return false;
+}
+$(document).on('click', '.add-form-row', function(e){
+    e.preventDefault();
+    cloneMore('.form-row:last', 'form');
+    return false;
+});
+$(document).on('click', '.remove-form-row', function(e){
+    e.preventDefault();
+    deleteForm('form', $(this));
+    return false;
+});
+</script>
+{% endblock %}

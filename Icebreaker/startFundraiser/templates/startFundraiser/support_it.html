@@ -1,0 +1,13 @@
+{% extends 'startFundraiser/home.html' %}
+
+{% block content %}
+    <h1>New donation</h1>
+{% if error_message %}
+    <p style="width:80%;margin:auto;color:darkred"><strong>{{ error_message }}!</strong></p>
+    <br><br>
+{% endif %}
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Add</button>
+    </form>
+{% endblock %}
