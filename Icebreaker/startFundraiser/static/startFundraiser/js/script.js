@@ -16,6 +16,15 @@
      $('#preloader').delay(350).fadeOut('slow');
  }); //anonymous function
 
+ $(window).on('scroll', function() {
+                if($(window).scrollTop()){
+                    $('nav').addClass('black');
+                }
+                else{
+                    $('nav').removeClass('black');
+                }
+            });
+
 
  $(document).ready(function() {
      $(function() {
@@ -37,3 +46,21 @@
          });
      });
  });
+
+
+ $(function () {
+     $('campaigns').owlCarousel({
+         items:2,
+         autoplay:true,
+         smartSpeed: 700,
+         loop:true,
+         autoplayHoverPause: true,
+         nav: true,
+         dots: false,
+         navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>']
+     });
+
+ });
+
+
+

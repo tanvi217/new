@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     path('register/', include('register.urls')),
     path('marketplace/', include('marketplace.urls')),
-    path('startfundraiser/', include('startFundraiser.urls')),
+    path('', include('startFundraiser.urls')),
     path('community/', include('community.urls')),
     path('polls/', include('polls.urls')),
     path('testimony/', include('testimony.urls')),

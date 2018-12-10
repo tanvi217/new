@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     'marketplace',
     'community',
     'polls',
-    'testimony'
+    'testimony',
+    'mathfilters',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -149,11 +151,11 @@ CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
 
 
-
 CKEDITOR_CONFIGS = {
     'default':{
-        'toolbar':'Custom',
-        'height':500,
+        'toolbar': 'Custom',
+        'height': 250,
+        'width': 500,
         'toolbar_Custom':[
             ['Bold', 'Link', 'Image'],
         ],

@@ -4,10 +4,13 @@ from django.utils import timezone
 import datetime
 from datetime import timedelta
 from PIL import Image
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.urls import reverse
+
+from django.core.exceptions import ValidationError
 
 choose_from_categories = (
     ('creative', (
@@ -24,17 +27,24 @@ choose_from_categories = (
     ))
 )
 
-choose_from_status = (
-    ('cc', 'campaign created'),
-    ('cd', 'campaign started'),
-    ('ces', 'campaign ended successfully'),
-    ('ceu', 'campaign ended unsuccessfully'),
+campaign_choices = (
+    ('created', 'Campaign Created'),
+    ('started', 'Campaign Started'),
+    ('successfully', 'Campaign Ended Successfully'),
+    ('unsuccessfully', 'Campaign Ended Unsuccesfully'),
 )
+
+
+def validate_tags(value):
+    if ',' in value:
+        return value
+    else:
+        raise ValidationError("Enter comma seperated tags")
 
 
 class Campaign(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    campaign_Title = models.CharField(max_length=200)
+    campaign_Title = models.CharField(max_length=200, unique=True)
     campaign_Tagline = models.CharField(max_length=200)
     campaign_Card_Image = models.ImageField(blank=True, null=True)
     campaign_Category = models.CharField(
@@ -43,8 +53,9 @@ class Campaign(models.Model):
     )
     country = models.CharField(max_length=50, default='India')
     city = models.CharField(max_length=50)
-    image = models.ImageField(upload_to="media", blank=True)
-    tags = models.CharField(max_length=200, blank=True, null=True)
+    image = models.ImageField(upload_to="media", blank=True, null=True)
+    video = models.ImageField(upload_to="media", blank=True, null=True)
+    tags = models.CharField(max_length=200, blank=True, null=True, validators=[validate_tags])
     overview = models.TextField(max_length=500)
     story = models.TextField(max_length=500, blank=True, null=True)
     goal = models.FloatField()
@@ -52,8 +63,11 @@ class Campaign(models.Model):
     end_Date = models.DateField()
     pledged = models.FloatField(default=0.0)
     people_pledged = models.IntegerField(default=0)
-    #    campaign_Status = models.ForeignKey(CampaignStatus, on_delete=models.PROTECT)
-    likes = models.ManyToManyField(User, related_name='likes',blank=True)
+    campaign_status = models.CharField(max_length=120, choices=campaign_choices, default='created')
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
+    views = models.IntegerField(default=0)
+    date_created = models.DateField(auto_now=False, auto_now_add=False, default=timezone.now)
+    perks = models.BooleanField(default=False)
 
     def __str__(self):
         return self.campaign_Title
@@ -66,27 +80,18 @@ class Campaign(models.Model):
 
     def total_likes(self):
         return self.likes.count()
-    # def camapign_began(self):
-    #     return datetime.
 
 
-class CampaignStatus(models.Model):
-    class Meta:
-        verbose_name_plural = 'Campaign Status'
+class Reward(models.Model):
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    amount = models.FloatField()
+    perks = models.CharField(max_length=255)
+    quantity = models.PositiveIntegerField(blank=True, null=True)
+    claimed = models.PositiveIntegerField(default=0, blank=True, null=True)
+    delivery = models.BooleanField(default=False)
 
-    campaign = models.OneToOneField(Campaign, on_delete=models.CASCADE)
-    status = models.CharField(max_length=5,
-                              choices=choose_from_status,
-                              default='cc',
-                              )
-
-
-#
-# class CampaignStatusHistory(models.Model):
-#     class Meta:
-#         verbose_name_plural = 'Campaign Status History'
-#     campaign_ID = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-#     campaign_Status = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.campaign
 
 
 class Faqs(models.Model):
@@ -94,8 +99,11 @@ class Faqs(models.Model):
         verbose_name_plural = 'FAQs'
 
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-    question = models.TextField(max_length=100, blank=True)
-    answer = models.TextField(max_length=200, blank=True)
+    question = models.TextField(max_length=100, default='What are you raising funds for?')
+    answer = models.TextField(max_length=200, default='Its for a good cause')
+
+    def __str__(self):
+        return self.question
 
 
 class Update(models.Model):
@@ -106,17 +114,19 @@ class Update(models.Model):
     def __str__(self):
         return self.text
 
+
 class Post(models.Model):
-    title = models.CharField(max_length = 255, blank = True, null = True)
-    description = RichTextUploadingField(blank = True, null = True)
-    description2 = RichTextUploadingField(blank = True, null = True, config_name = 'special')
-    body = models.TextField(blank = True, null = True)
-    order = models.IntegerField(blank = True, null = True)
-    slug = models.SlugField(default = '', blank = True)
+    title = models.CharField(max_length=255, blank=True, null=True)
+    description = RichTextUploadingField(blank=True, null=True)
+    description2 = RichTextUploadingField(blank=True, null=True, config_name='special')
+    body = models.TextField(blank=True, null=True)
+    order = models.IntegerField(blank=True, null=True)
+    slug = models.SlugField(default='', blank=True)
 
     def save(self):
         self.slug = slugify(self.title)
         super(Post, self).save()
+
     def __str__(self):
         return '%s' % self.title
 
@@ -127,10 +137,11 @@ class comment(models.Model):
     author = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
     camp = models.ForeignKey(Campaign, default=None, on_delete=models.CASCADE)
 
+
 class reply(models.Model):
     content = models.TextField(max_length=1000)
-    comment = models.ForeignKey(comment, default=None,null=True,on_delete=models.CASCADE)
-    author = models.ForeignKey(User,default=None,null=True,on_delete=models.CASCADE)
+    comment = models.ForeignKey(comment, default=None, null=True, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True, null=True)
 
 

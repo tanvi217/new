@@ -20,16 +20,22 @@ body {
 }
 h1, h2, h3, h4, h5, h6 {
     font-family: "Raleway", sans-serif;
+  color: #0c5460;
 }
 p {
-    font-family: "Open Sans", sans-serif;
-    font-size: 13px;
-    font-weight: 400;
+    font-family: "Raleway", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
     line-height: 24px;
 }
 section {
-    background-color: #e9ecef;
+    background-color: #f5f5f5;
     overflow: hidden;
+}
+section1 {
+    background-color: #f7f7f7;
+    overflow: hidden;
+    margin-top: 100px;
 }
 /* Preloader */
 #preloader {
@@ -50,6 +56,53 @@ section {
 #class2 {
     font-family: 'Raleway', sans-serif;
     color: #d39e00;
+}
+
+#class3 {
+    font-family: 'Raleway', sans-serif;
+        color: #0c5460;
+    text-align: center;
+}
+
+.logo-des {
+    color: #0f74a8;
+    font-size: large;
+}
+
+#icons {
+    font-size:100px;
+    color: #d39e00;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.counting-sec{
+    padding: 40px 0;
+    width: 100%;
+    background: linear-gradient(90deg,#f5f5f5,#6c757d);
+}
+
+.funds-sec{
+    padding: 40px 0;
+    width: 100%;
+}
+
+.footer-sec{
+    padding: 40px 0;
+    width: 100%;
+    background: linear-gradient(90deg,#f5f5f5,#0c5460);
+}
+
+
+#image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    max-width: 100%;
+    max-height: 100%;
+    vertical-align: middle;
 }
 
 #status {
@@ -83,7 +136,7 @@ section {
     background-size: cover;
 }
 #home-overlay {
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0,0,0,0.7);
     width: 100%;
     height: 100%;
     position: fixed;
@@ -101,17 +154,37 @@ section {
     vertical-align: middle;
 }
 #home-heading h1 {
-    color: #6c757d;
+    color: #f5f5f5;
     font-size: 65px;
     font-weight: 100;
     margin: 0;
     display: inline-block;
 }
 #home-heading h1 span {
-    color: #0c5460;
+    color: #0f74a8;
     font-weight: 500;
     margin: 8px 0 30px 0px;
 }
+
+a {
+    color: #0c5460;
+}
+
+a:hover{
+    text-decoration: none;
+    color: #d39e00;
+}
+
+
+/* Content-box */
+.content-box-lg {
+    padding: 120px 0;
+}
+
+.content-box-md {
+    padding: 100px 0;
+}
+/**/
 
 /* Buttons */
 .btn-general {
@@ -124,9 +197,33 @@ section {
     transition: all .4s;
 }
 
+.button {
+  background-color: #0c5460;
+  font-family: 'sans-serif', Raleway;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.button1 {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.button2:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
 .btn-home {
-    color: #0c5460;
-    border: 1px solid #0c5460;
+    color: #0f74a8;
+    border: 1px solid #0f74a8;
 }
 
 .btn-home:hover, .btn-home:focus {
@@ -135,66 +232,124 @@ section {
 
 }
 
+/* NAVBAR */
 /* Navigation */
-.navbar {
-    padding: 35px 0 20px 0;
-    }
 
-.navbar-brand{
-    color: #0c5460;
-    font-family: 'Raleway', sans-serif;
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    padding: 10px 100px;
+    box-sizing: border-box;
+    transition: .3s;
 }
 
-.navbar-brand:hover, .navbar-brand:focus {
-    color: #0c5460;
-    font-family: 'Raleway', sans-serif;
+nav.black {
+    background: rgba(0,0,0,0.8);
+    height: 100px;
+    padding: 10px 100px;
+    -webkit-transition-delay: 1s ;
+    -webkit-transition-property: -webkit-transform ;
+    -moz-transition-property: -moz-transform;
+    z-index: 1;
 }
 
-.site-nav-wrapper {
-    padding: 0 50px 0 50px;
+nav .logo {
+    padding: 22px 20px;
+    height: 80px;
+    float: left;
+    font-size: 30px;
+    transition: .3s;
 }
 
-ul.navbar-nav > li > a {
-    font-family: 'Raleway', sans-serif;
-    color: #d39e00;
-    font-size: 13px;
-    font-weight: 400;
-    letter-spacing: 1px;
+nav.black .logo{
+    color: #f7f7f7;
 }
 
-a, li {
-    color: #0c5460;
-    text-decoration: None;
+nav ul {
+    list-style: none;
+    float: right;
+    margin: 0;
+    padding: 0;
+    display: flex;
 }
 
-#links{
-    display: inline-block;
+nav ul li {
+    list-style: none;
 }
 
-ul.navbar-nav > li > a:hover,
-ul-navbar-nav > li > a:focus {
-    background: none;
-    color: #d39e00;
+nav ul li a {
+    line-height: 80px;
+    color: #ffcc33;
+    padding: 12px 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .3s;
 }
+
+nav.black ul li a{
+    color: #0f74a8;
+}
+
+section.sec1{
+    width: 100%;
+    height: 30vh;
+    background-size: cover;
+    background-position: center ;
+}
+/* END NAV */
 
 /* Side nav */
-/*
-.thumbnail img {
-    height:250px;
-    width:100%;
+
+.sidenav {
+    margin-top: 20%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
 }
-*/
+
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
 .thumbnail{
     width : 100%;
-    height: 500px;
-    overflow: auto;
+    height: 650px;
+    overflow: hidden;
+  margin-left: 16%;
+  margin-top: 8%;
 }
 
-.thumbnail img{
+.error {
+    width: 80%;
+    margin: auto;
+    color: darkred;
+}
 
+.thumbnail img-top{
     width: 100%;
-    height: auto;
-    display: block;
+    height: 20vw;
+  object-fit: cover;
 }
 
 .update {
@@ -203,6 +358,12 @@ ul-navbar-nav > li > a:focus {
 .main {
     max-width: 1000px;
     margin: auto;
+}
+
+.thumbnail:hover{
+  -webkit-box-shadow: -1px 9px 40px -12px #0c5460;
+  -moz-box-shadow: -1px 9px 40px -12px #0c5460;
+  box-shadow: -1px 9px 40px -12px #0c5460;
 }
 
 .row {
@@ -240,4 +401,14 @@ ul-navbar-nav > li > a:focus {
     .column {
         width: 50%;
     }
+}
+
+.camp {
+    color: #d39e00;
+    font-size: 25px;
+}
+
+.camp_status {
+    color: #d39e00;
+    font-size: 20px;
 }

@@ -1,156 +1,193 @@
-{% extends 'startFundraiser/base.html' %}
+
+
+{% extends 'startFundraiser/home.html' %}
 {% block title %}{{ campaign1.campaign_Title }}{% endblock %}
-
 {% block content %}
+<br><br><br><br><br><br>
 <div class="container-fluid" style="">
-    <div class="row justify-content-center">
-        <div class="col-lg-6" style="align-content: center">
-                        {% if campaign1.image %}
-                            <img src="{{ campaign1.image.url }}" class="img-responsive" style="width: 100%">
-                        {% else %}
-                            <h3>{{ campaign1.campaign_Title }}</h3>
-                        {% endif %}
-        </div>
-        <div class="col-lg-4">
-                     <h3 style="color: #6c757d">{{ campaign1.campaign_Category|capfirst }}</h3>
-                     <hr>
-                     <h1>{{ campaign1.campaign_Title }}</h1>
-                     <br>
-                     <h5>{{ campaign1.campaign_Tagline }}</h5>
-                     <br>
-                     <h4 style="color: #6c757d">Campaign Initiator</h4>
-                     <h5>{{ campaign1.user }}</h5>
-                     <span class="glyphicon glyphicon-map-marker" style="float: left"></span>
-                     <h5>{{ campaign1.city|capfirst }}, {{ campaign1.country|capfirst }}</h5>
-                     <br>
-                     {% if is_editable %}
-                     <strong>
-                        <span class="glyphicon glyphicon-edit"><a href="{% url 'startFundraiser:campaign_edit' campaign1.id %}" >Edit</a></span>&nbsp;
-                        <span class="glyphicon glyphicon-trash"><a href="{% url 'startFundraiser:campaign_delete' campaign1.id %}" >Delete</a></span>&nbsp;
-                        <span class="glyphicon glyphicon-pencil"><a href="{% url 'startFundraiser:add_update' campaign1.id %}" >Update</a></span>&nbsp;
-                        <span class="glyphicon glyphicon-plus"><a href="{% url 'startFundraiser:add_faq' campaign1.id %}" >FAQ</a></span>&nbsp;
-                      </strong>
-                     {% endif %}
-                     <span class="glyphicon glyphicon-edit"><a href="{% url 'startFundraiser:add_comment' campaign1.id %}" >Comments</a></span>&nbsp;
-
-                    <div id="like-section">
-                      {% include 'startFundraiser/like_section.html' %}
-                    </div>
-
-
-                     <br>
-                     <br>
-                     <h4 style="color: #6c757d">Goal</h4>
-                     <p>&#8377;{{ campaign1.goal }}</p>
-                     <br>
-                     <p style="color: #6c757d">&#8377;<strong>{{ campaign1.pledged }}</strong> raised by {{ campaign1.people_pledged }} supporters</p>
-                     <br>
-                    <span class="glyphicon glyphicon-piggy-bank"><a href="{% url 'startFundraiser:campaign_support' campaign1.id %}" role="button">
-                    Support It
-                    </a>
-                    </span>&nbsp;
-
-        </div>
-    </div>
-    <br><br><br>
-    <div class="row justify-content-center">
-           <div class="col-lg-3">
-                        {% if campaign1.campaign_Card_Image %}
-                            <img src="{{ campaign1.campaign_Card_Image.url }}" class="img-responsive" style="width: 100%">
-                        {% endif %}
-           </div>
-           <div class="col-lg-5">
-           <h4 style="color: #6c757d">Campaign Outline</h4><hr>
-                     <p>{{ campaign1.overview }}</p>
-           </div>
-    </div>
-    <div class="row justify-content-center">
-           <div class="col-lg-8">
-           <br><br>
-           <h4 style="color: #6c757d">Story</h4><hr>
-                     <p>{{ campaign1.story }}</p>
-           </div>
-    </div>
-    <br><br><br>
-    <div class="row justify-content-center">
-
-                <div class="col-lg-2" ><a href="#faqs" style="color: #6c757d"><strong>FAQs({{ campaign1.faqs_set.count }})</strong></a></div>
-                <div class="col-lg-2" ><a href="#comments" style="color: #6c757d"><strong>Comments</strong></a></div>
-                <div class="col-lg-2" ><a href="#updates" style="color: #6c757d"><strong>Updates</strong>({{ campaign1.update_set.count }})</a></div>
-                <div class="col-lg-2" ><a href="#supporters" style="color: #6c757d"><strong>Supporters</strong>({{ campaign1.people_pledged }})</a></div>
-
-                <div class="col-lg-8"><hr></div>
-
-                <!--FAQs-->
-                <div class="col-lg-8">
-                FAQs
-                <a name="faqs">
-                    {% for faq in campaign1.faqs_set.all %}
-                    <div class="update">
-                    <strong>{{ faq.question }}</strong>
-                    <p>{{ faq.answer }}</p>
-                    </div>
-                    {% empty %}
-                    <p>No faqs! </p>
-                    {% endfor %}
-                </a>
-                <hr>
-                </div>
-                <!--Comments-->
-                <div class="col-lg-8">
-                COMMENTS
-                <a name="comments">
-                  {% for comment in campaign1.comment_set.all %}
-                    <p>{{ comment.content }}</p>
-                    <footer class = "blockquote-footer">by <cite>{{ comment.author }}</cite></footer>
-                  {% endfor %}
-                  </a>
-                </div>
-
-                <!--Updates-->
-                <div class="col-lg-8">
-                UPDATES
-                <a name="updates">
-                {% for update in campaign1.update_set.all %}
-                <div class="update">
-                    <div class="date">{{ update.created_date }}</div>
-                    <strong>{{ campaign1.user }}</strong>
-                    <p>{{ update.text|safe }}</p>
-                </div>
-                {% empty %}
-                    <p>No updates! </p>
-                {% endfor %}
-                </a>
-                <hr>
-                </div>
-
-                <!--Supporters-->
-                <div class="col-lg-8">
-                SUPPORTERS
-                <a name="supporters">
-                {% for supporter in campaign1.backers_set.all %}
-                    <div class="update" style="text-align: center">
-                        <strong>{{ supporter.backer }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ supporter.amount }}
-                    </div>
-                {% empty %}
-                    <p>No backers! </p>
-                {% endfor %}
-                </a>
-                <hr>
-                </div>
-
-    </div>
-    <br><br><br>
-        <div class="row justify-content-center">
-
-           <div class="col-lg-10">
-           <br><br>
-            {% if tag %}
-                <h4 style="color: #6c757d">Tags</h4><hr>
-                {% for ind in tag %}
-                     {{ ind }}
-                {% endfor %}
+<div class="row justify-content-center">
+   <div class="col-lg-6">
+      {% if campaign1.image %}
+      <img src="{{ campaign1.image.url }}" class="img-responsive" style="width: 100%">
+      {% else %}
+      <h3>{{ campaign1.campaign_Title }}</h3>
+      {% endif %}
+   </div>
+   <div class="col-lg-4">
+      <h3 style="color: #6c757d">{{ campaign1.campaign_Category|capfirst }}</h3>
+      <hr>
+      <h1>{{ campaign1.campaign_Title }}</h1>
+      <br>
+      <h3>{{ campaign1.campaign_Tagline }}</h3>
+      <br>
+      <h2 style="color: #6c757d">Campaign Initiator</h2>
+      <h5>{{ campaign1.user }}</h5>
+      <span class="glyphicon glyphicon-map-marker" style="float: left"></span>
+      <h5>{{ campaign1.city|capfirst }}, {{ campaign1.country|capfirst }}</h5>
+      <br>
+      {% if is_editable %}
+      <div class="btn-group">
+         <button onclick="window.location='{% url 'startFundraiser:add_update' pk=campaign1.id %}'" type="button" class="button button1"><span class="glyphicon glyphicon-pencil" style="color: whitesmoke; font-size: medium"> Update</span></button>&nbsp;
+         <button onclick="window.location='{% url 'startFundraiser:add_faq' pk=campaign1.id %}'" type="button" class="button button2"><span class="glyphicon glyphicon-plus" style="color: whitesmoke; font-size: medium"> FAQ</span></button>
+         <button onclick="window.location='{% url 'startFundraiser:campaign_rewards' pk=campaign1.id %}'" type="button" class="button button2"><span class="glyphicon glyphicon-plus" style="color: whitesmoke; font-size: medium"> Rewards</span></button>
+         <br><br>
+      </div>
+      {% endif %}
+      <div class="btn-group">
+         <button type="button" class="button button2" style="color: #d39e00"><span class="glyphicon glyphicon-edit"><a href="{% url 'startFundraiser:add_comment' campaign1.id %}" style="color: #d39e00"> Comments</a></span></button>
+         {% if user.is_authenticated %}
+         <form action="{% url 'startFundraiser:like_camp' %}" method="post">
+            {% csrf_token %}
+            {% if is_liked %}
+            <button type="submit" class="button button2" style="color: #d39e00" id="like" name="camp_id" value="{{ campaign1.id }}">Dislike</button>
+            {% else %}
+            <button type="submit" class="button button2" style="color: #d39e00" id="like" name="camp_id" value="{{ campaign1.id }}">Like</button>
             {% endif %}
-            <br><br><br>
-
+         </form>
+         {% endif %}
+      </div>
+      {{ total_likes }} Likes
+      <br>
+      <br>
+      <div class="row">
+         <div class="col-sm-6">
+            <h3 style="color: #6c757d">Goal</h3>
+         </div>
+         <div class="col-sm-6">
+            <h3 style="color: #6c757d"> &#8377;{{ campaign1.goal }}</h3>
+         </div>
+      </div>
+      <p style="color: #6c757d">&#8377;<strong>{{ campaign1.pledged }}</strong> raised by {{ campaign1.people_pledged }} supporters</p>
+      <br>
+      <button onclick="window.location='{% url 'startFundraiser:campaign_support' campaign1.id %}'" class="button button2">
+      <span class="glyphicon glyphicon-piggy-bank"><span style="color: white">
+      SUPPORT IT
+      </span>&nbsp;
+      </button>
+   </div>
+</div>
+<br><br><br>
+<div class="row justify-content-center">
+   <div class="col-lg-3">
+      {% if campaign1.campaign_Card_Image %}
+      <img src="{{ campaign1.campaign_Card_Image.url }}" class="img-responsive" style="width: 100%">
+      {% endif %}
+   </div>
+   <div class="col-lg-5">
+      <h2 style="color: #6c757d">Campaign Outline</h2>
+      <hr>
+      <p>{{ campaign1.overview }}</p>
+   </div>
+</div>
+<div class="row justify-content-center">
+   <div class="col-lg-8">
+      <br><br>
+      <h2 style="color: #6c757d">Story</h2>
+      <hr>
+      <p>{{ campaign1.story }}</p>
+   </div>
+</div>
+<br><br><br>
+<div class="row justify-content-center">
+   <div class="col-lg-8">
+      {% if campaign1.reward %}
+      <h2 style="color: #6c757d">Rewards</h2>
+      <hr>
+      {% endif %}
+      {% for reward in campaign1.reward_set.all %}
+      <div class="card border-warning mb-3" style="max-width: 18rem;">
+         <div class="card-header">{{ reward.perks }}</div>
+         <div class="card-body text-warning">
+            <h5 class="card-title">Donate {{ reward.amount }}</h5>
+            <p class="card-text">{{ reward.claimed }} of {{ reward.quantity }} claimed</p>
+            <a class="btn btn-success" href="{% url 'startFundraiser:claim' reward.id %}">
+               <h4>Get this!</h4>
+            </a>
+         </div>
+      </div>
+      {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+      {% endfor %}
+   </div>
+</div>
+<br><br><br>
+<div class="container">
+<ul class="nav nav-tabs">
+   <li >
+      <a data-toggle="tab" href="#comments">
+         <h3>COMMENTS <span class="badge">{{ campaign1.faqs_set.count }}</span></h3>
+      </a>
+   </li>
+   <li >
+      <a data-toggle="tab" href="#updates">
+         <h3>UPDATES <span class="badge">{{ campaign1.update_set.count }}</span></h3>
+      </a>
+   </li>
+   <li >
+      <a data-toggle="tab" href="#supporters">
+         <h3>SUPPORTERS <span class="badge">{{ campaign1.people_pledged }}</span></h3>
+      </a>
+   </li>
+   <li >
+      <a data-toggle="tab" href="#faqs">
+         <h3>FAQs <span class="badge">{{ campaign1.faqs_set.count }}</span></h3>
+      </a>
+   </li>
+</ul>
+<div class="tab-content">
+   <div id="comments" class="tab-pane fade in active">
+      {% for comment in campaign1.comment_set.all %}
+      <p>{{ comment.content }}</p>
+      <footer class = "blockquote-footer">by <cite>{{ comment.author }}</cite></footer>
+      {% endfor %}
+   </div>
+   <div id="updates" class="tab-pane fade">
+      {% for update in campaign1.update_set.all %}
+      <div class="update">
+         <div class="date">{{ update.created_date }}</div>
+         <strong>{{ campaign1.user }}</strong>
+         <p>{{ update.text|safe }}</p>
+      </div>
+      {% empty %}
+      <p>No updates! </p>
+      {% endfor %}
+   </div>
+   <div id="supporters" class="tab-pane fade">
+      {% for supporter in campaign1.backers_set.all %}
+      <div class="update">
+         <strong>{{ supporter.backer }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ supporter.amount }}
+      </div>
+      {% empty %}
+      <p>No backers! </p>
+      {% endfor %}
+   </div>
+   <div id="faqs" class="tab-pane fade">
+      {% for faq in campaign1.faqs_set.all %}
+      <div class="update">
+         <strong>{{ faq.question }}</strong>
+         <p>{{ faq.answer }}</p>
+      </div>
+      {% empty %}
+      <p>No faqs! </p>
+      {% endfor %}
+   </div>
+</div>
+<br><br><br>
+<div class="row justify-content-center">
+<div class="col-lg-10">
+<br><br>
+{% if tag %}
+<h4 style="color: #6c757d">Tags</h4>
+<hr>
+{% for ind in tag %}
+{{ ind }}
+{% endfor %}
+{% endif %}
+<br><br><br>
+{% if is_editable %}
+<div class="btn-group">
+   <button onclick="window.location='{% url 'startFundraiser:campaign_edit' pk=campaign1.id %}'" type="button" class="button button1"><span class="glyphicon glyphicon-edit"style="color: whitesmoke; font-size: medium" > Edit</span></button>
+   <button onclick="window.location='{% url 'startFundraiser:campaign_delete' pk=campaign1.id %}'" type="button" class="button button2"><span class="glyphicon glyphicon-trash" style="color: whitesmoke; font-size: medium"> Delete</span></button>
+</div>
+{% endif %}
 {% endblock %}
+
