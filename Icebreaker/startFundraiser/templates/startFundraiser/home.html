@@ -29,10 +29,10 @@
                <div class="logo"><a href="{% url 'startFundraiser:home' %}" class="logo-des">ice<strong>Breaker</strong></a></div>
                <ul>
                   <li><a href="{% url 'startFundraiser:start_campaign' %}">Start Campaign</a></li>
-                  <li><a href="{% url 'startFundraiser:start_campaign' %}">Volunteer</a></li>
+                  <li><a href="{% url 'community:make_group' %}">Volunteer</a></li>
                   <li><a class="active" href="{% url 'startFundraiser:campaigns' %}">Explore</a></li>
-                  <li><a class="active" href="{% url 'startFundraiser:campaigns' %}">Marketplace</a></li>
-                  <li><a class="active" href="{% url 'startFundraiser:campaigns' %}">Communities</a></li>
+                  <li><a class="active" href="{% url 'marketplace:products_blog' %}">Marketplace</a></li>
+                  <li><a class="active" href="{% url 'community:view_group' %}">Communities</a></li>
                   <li><a class="active" href="{% url 'polls:query_view' %}">Contact Us</a></li>
                   {% if user.is_authenticated %}
                   <li><a href="{% url 'startFundraiser:campaigns' %}">Howdy {{ request.user }}!</a></li>
