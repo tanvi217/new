@@ -1,7 +1,6 @@
-{% extends 'startFundraiser/home.html' %}
+{% extends "startFundraiser/base.html" %}
 
 {% block content %}
-<br><br><br><br><br><br>
 <form class="" method="post">
     {% csrf_token %}
     {{ form.media }}
