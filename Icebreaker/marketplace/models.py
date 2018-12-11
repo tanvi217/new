@@ -11,6 +11,7 @@ class product(models.Model):
     product_title = models.CharField(max_length = 100,)
     product_type = models.CharField(null=True, max_length = 100)
     overview = models.TextField()
+    description = models.TextField(null = True)
     date = models.DateTimeField(auto_now_add = True)
     image = models.ImageField(upload_to="media", blank=True)
     quantity = models.PositiveIntegerField(null=True)

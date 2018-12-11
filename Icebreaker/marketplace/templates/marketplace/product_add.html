@@ -108,6 +108,16 @@
                 {% endif %}
               </div>
 
+              <div class="input-field col s12">
+                {{form.description| add_class:"materialize-textarea"}}
+                <label for="{{form.description.id_for_label}}">description</label>
+                {% if form.description.help_text %}
+                  <span class="helper-text">{{form.description.help_text}}</span>
+                {% endif %}
+                {% if form.description.errors %}
+                  <span class="helper-text red-text">{{form.description.errors}}</span>
+                {% endif %}
+              </div>
 
               <div class="file-field input-field col s7">
                 <div class="btn">

@@ -1,5 +1,3 @@
-
-
 {% load staticfiles %}
 {% load mathfilters %}
 <!DOCTYPE html>
@@ -23,6 +21,8 @@
       <link rel="stylesheet" href="{% static 'startFundraiser/style.css' %}">
       <link rel="shortcut icon" href="{%  static 'startFundraiser/favicon.ico' %}">
       <title>{% block title %}IceBreaker{% endblock %}</title>
+      {% block internal_styles %}
+      {% endblock internal_styles%}
    </head>
    <body>
       <!--Header-->
@@ -152,7 +152,9 @@
 
       <!---->
       <!---->
+      <main>
 
+      </main>
       <!--Footer-->
       <section class="footer-sec">
          <footer class="footer">
@@ -163,8 +165,6 @@
 							<li><a href="{% url 'marketplace:products_blog' %}">Marketplace</a></li>
 							<li><a href="{% url 'polls:query_view' %}">Contact Us</a></li>
 						</ul>
-							<a href="#" class="fa fa-facebook"></a>
-							<br>
 						<p>
 							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | </i> by iceBreaker
 						</p>

@@ -38,26 +38,28 @@
 <!--products-->
 <h2>Products</h2>
 <hr>
+<div class="container">
 <div class="row">
   {% for product in products %}
-<div class="col s12 m6 l3">
-  <div class="card">
-    <div class="card-image">
-      <img src="{{product.image.url}}" style="width:100%; height:200px;">
-    </div>
-    <div class="card-content">
-      <span class="card-title"><a style="color:inherit;" href = "{% url 'marketplace:product_details' slug=product.pk %}"><h4>{{product.product_title}}</h4></a></span>
+  <div class="col s12 l4">
+    <div class="card">
+      <div class="card-image">
+        <img src="{{product.image.url}}" style="width:100%; height:200px;">
+      </div>
+      <div class="card-content">
+        <span class="card-title"><a style="color:inherit;" href = "{% url 'marketplace:product_details' slug=product.pk %}"><h4>{{product.product_title}}</h4></a></span>
 
-    <hr>
-      <p><b>Type: </b>{{ product.product_type }}</p>
-      <p><b>{{product.snippept}}</b></p>
-      <p><b>Quantity:</b> {{product.quantity}}</p>
-      <p><b>Cost:</b> Rs.{{product.cost}}</p>
-    </div>
+      <hr>
+        <p><b>Type: </b>{{ product.product_type }}</p>
+        <p><b>{{product.snippept}}</b></p>
+        <p><b>Quantity:</b> {{product.quantity}}</p>
+        <p><b>Cost:</b> Rs.{{product.cost}}</p>
+      </div>
 
+    </div>
   </div>
+  {% endfor %}
 </div>
-{% endfor %}
 </div>
 <script>
 $(document).ready(function(){

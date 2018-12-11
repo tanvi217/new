@@ -2,71 +2,80 @@
 <html>
 <head>
   <title>blog</title>
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <style >
-      .opacity {
-        background: ;
+    <style>
+
+      nav ul li a{
+        color: yellow;
       }
 
+      .page-footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+      }
     </style>
   </head>
 
   <body>
     <!--navbar-->
-    <ul id="dropdown1" class="dropdown-content ">
+  <div class="navbar-fixed">
+    <ul id="dropdown1" class="dropdown-content">
       <li><a style="color:blue" href="{% url 'register:user_logout' %}">Logout</a></li>
     </ul>
-    <nav>
-      <div class="nav-wrapper black lighten-1" >
-        <a style="color:blue" href="{% url 'startFundraiser:home' %}" class="brand-logo">IceBreaker</a>
+    <nav class="black">
+      <div class="nav-wrapper">
+        <a   href="{% url 'startFundraiser:home' %}" class="brand-logo blue-text">IceBreaker</a>
         <ul class="right hide-on-med-and-down">
+          <li><a href="{% url 'marketplace:products_blog' %}">blog</a></li>
+          <li><a href="{% url 'marketplace:add_product' %}">Add Products</a></li>
+          <li><a href="{% url 'marketplace:my_products' %}">My Product</a></li>
+          <li><a href="/marketplace/add_tocart/"+str(id)><i class="fas fa-cart-plus"></i></a></li>
+          <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Hi {{request.user}}<i class="material-icons right">arrow_drop_down</i></a></li>
 
-          <li><a style="color:" href="{% url 'marketplace:products_blog' %}">blog</a></li>
-          <li><a style="color:blue"  href="{% url 'marketplace:add_product' %}">Add Products</a></li>
-          <li><a style="color:blue"  href="{% url 'marketplace:my_products' %}">My Product</a></li>
-          <li><a style="color:cyan" href="/marketplace/add_tocart/"+str(id)><i class="fas fa-cart-plus"></i></a></li>
-          <li><a style="color:blue" class="dropdown-trigger" href="#!" data-target="dropdown1">Hi {{request.user}}<i class="material-icons right">arrow_drop_down</i></a></li>
           <script type="text/javascript">
             $(".dropdown-trigger").dropdown();
-          </script>
+          });
+          $(window).on('scroll', function() {
+                         if($(window).scrollTop()){
+                             $('nav').addClass('black');
+                         }
+                         else{
+                             $('nav').removeClass('black');
+                         }
+                     });
+          });
+        </script>
 
 
         </ul>
       </div>
     </nav>
-
+  </div>
     {% block content%}
+      <main>
+      </main>
     {% endblock %}
 
     <!--footer-->
-    <footer class="page-footer cyan darken-4">
-          <div class="container">
-            <div class="row">
-              <div class="col l6 s12">
-                <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-3">You can use rows and columns here to organize your footer content.</p>
-              </div>
-              <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">Contact US</h5>
-                <ul>
-                  <li><a class="grey-text text-lighten-3" href="{% url 'messenger' %}">facebook</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
+    <footer class="page-footer grey lighten-1">
+        <div class="container">
+            <div class="row center">
+              <div class="col l12 s12">
+                <a href="#" class="black-text">Home</a>
+                <a href="#" class="black-text">Home</a>
               </div>
             </div>
-          </div>
-          <div class="footer-copyright">
-            <div class="container">
-            © 2018 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            <div class="row center">
+              <div class="col l12 s12 blue-text">
+                <h6>Copyright ©2018 All rights reserved | by iceBreaker</h6>
+              </div>
             </div>
           </div>
         </footer>
