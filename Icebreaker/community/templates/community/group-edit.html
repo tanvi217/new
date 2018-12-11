@@ -3,51 +3,58 @@
     {% block content %}
 
 
-
-
-
-
-
-
-
-
-       <br><br><br>
+       <br>
        <center>
-          <div id="map" class="z-depth-5" style="height:50%"></div>
+          <div id="map" class="z-depth-5" style="height:60%"></div>
        </center>
        <p>Click on the map to add markers.</p>
        <br><br>
        <br><br>
-       <form method="POST" name="register">
-          {% csrf_token %}
-          <p>
-             <label>title</label>
-             <input type="text" name="title" required> initial : {{ content.title }}
-          </p>
-          <p>
-             <label>type</label>
-             <input type="text" name="type" required> initial : {{ content.type }}
-          </p>
-          <p>
-             <label>lat</label>
-             <input type="text" name="lat" id="lat1" onkeyup="myFunction()" required> initial : {{ content.lat }}
-          </p>
-          <p>
-             <label>lon</label>
-             <input type="text" name="lon" id="lon1" onkeyup="myFunction()" required> initial : {{ content.lon }}
-          </p>
-          <p>
-             <label>date</label>
-             <input type="date" name="date" required> initial : {{ content.date }}
-          </p>
-          <p>
-             <label>address</label>
-             <input type="text" name="address" id="address" required> initial : {{ content.address }}
-          </p>
-          <input id="submit1" type="button" value="Geocode">
-          <button type="submit">register</button>
-          <br><br><br>
-       </form>
+       <div class="container">
+          <div class="row">
+            <div class="col-sm-5">
+
+               <form method="POST" name="register">
+                  {% csrf_token %}
+                  <p>
+                     <label>title</label>
+                     <input type="text" name="title" required>
+                  </p>
+                  <p>
+                     <label>type</label>
+                     <input type="text" name="type" required>
+                  </p>
+                  <p>
+                     <label>lat</label>
+                     <input type="text" name="lat" id="lat1" onkeyup="myFunction()" required>
+                  </p>
+                  <p>
+                     <label>lon</label>
+                     <input type="text" name="lon" id="lon1" onkeyup="myFunction()" required>
+                  </p>
+                  <p>
+                     <label>date</label>
+                     <input type="date" name="date" required>
+                  </p>
+                  <p>
+                     <label>address</label>
+                     <input type="text" name="address" id="address" required>
+                  </p>
+                  <input id="submit1" type="button" class="btn btn-success" value="Geocode">
+                  <button type="submit" class="btn btn-success">register</button>
+                  <br><br><br>
+               </form>
+            </div>
+            <div class="col-sm-5">
+                initial title: {{ content.title }}<br>
+                initial type: {{ content.type }} <br>
+                initial latitude: {{ content.lat }}<br>
+                initial latitude: {{ content.lon }}<br>
+                initial date: {{ content.date }} <br>
+                 initial address: {{ content.address }}<br>
+            </div>
+          </div>
+        </div>
        <script>
           // In the following example, markers appear when the user clicks on the map.
           // The markers are stored in an array.
@@ -203,5 +210,6 @@
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoxHIV4EUz3PsPOwB_ehuLLDu4OE0ELLc&callback=initMap"></script>
 
   {% endblock %}
+
 
 

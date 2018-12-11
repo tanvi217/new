@@ -7,28 +7,11 @@ from .models import GroupTable, MemberTable, CommentTable, UpdateTable
 import requests
 import json
 from datetime import datetime
-#
-from iceBreaker.serializer import CommunitySerializer,MemberSerializer,CommentSerializer
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import status
 
 
 
 
 
-
-def home(request):
-    log = 0
-    if request.user.is_authenticated:
-        log = 1
-
-    return render(request, 'community/home.html', {'log':log})
-
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect('/')
 
 @login_required(login_url="http://127.0.0.1:8000/register/login/")
 def view_community(request):
@@ -71,9 +54,6 @@ def make_group(request):
     else:
         return render(request, 'community/make-group.html', {})
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
-def page_not_found(request):
-    return render(request, 'community/nopage.html', {})
 
 
 @login_required(login_url="http://127.0.0.1:8000/register/login/")
@@ -284,45 +264,8 @@ def profile_detail(request, u_id):
         return render(request, 'community/nopage.html', {})
     usr = User.objects.get(pk=u_id)
     if usr == request.user:
-        return redirect('my_group')
+        return redirect('community:my_group')
 
     content = GroupTable.objects.filter(founder=usr)
 
     return render(request, 'community/profile.html', {'content':content, 'usr':usr})
-
-class communityREST(APIView):
-    def get(self,request):
-        pro = GroupTable.objects.all()
-        serializer = CommunitySerializer(pro, many = True)
-        return Response(serializer.data)
-    def put(self,request):
-        serializer = CommunitySerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-
-
-class communityMemberREST(APIView):
-    def get(self,request):
-        pro = MemberTable.objects.all()
-        serializer = MemberSerializer(pro, many = True)
-        return Response(serializer.data)
-    def put(self,request):
-        serializer = MemberSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-
-class communitycommentREST(APIView):
-    def get(self,request):
-        pro = CommentTable.objects.all()
-        serializer = CommentSerializer(pro, many = True)
-        return Response(serializer.data)
-    def put(self,request):
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)

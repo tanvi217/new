@@ -35,13 +35,19 @@
                  </div>
               </div>
               <center>
-                 {% if message %}
-                 {{ message }}
+                 {% if request.user == group.founder %}
+                 {% else %}
+                    {% if message %}
+                    {{ message }}
+                    {% endif %}
                  {% endif %}
               </center>
               <form method="POST">
                  <center>
                     {% csrf_token %}
+                    {% if request.user == group.founder %}
+                    {% else %}
+
                     <div class="custom-control custom-radio">
                        <div class="form-check form-check-inline">
                           <input type="radio" class="form-check-input" value="yes" id="materialInline2" name="choice">
@@ -55,6 +61,7 @@
                        <br>
                        <button type="submit" class="btn btn-success">submit</button>
                     </div>
+                    {% endif %}
                  </center>
                  <br>
                  <center>

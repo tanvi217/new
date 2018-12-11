@@ -29,7 +29,7 @@
                <nav class="navbar navbar-expand-lg navbar-dark primary-color fixed-top elegant-color">
 
                     <!-- Navbar brand -->
-                    <a class="navbar-brand" href="#">Navbar</a>
+                    <a class="navbar-brand" href="{% url 'startFundraiser:home' %}">iceBreaker</a>
 
                     <!-- Collapse button -->
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
@@ -42,16 +42,13 @@
 
                       <!-- Links -->
                       <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                          <a class="nav-link" href="#">Home
-                            <span class="sr-only">(current)</span>
-                          </a>
-                        </li>
+
                         <li class="nav-item">
-                          <a class="nav-link" href="#">Features</a>
+                          <a class="nav-link" href="{% url 'startFundraiser:home' %}">Fundraiser</a>
                         </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#">Pricing</a>
+
+                          <li class="nav-item">
+                          <a class="nav-link" href="{% url 'marketplace:products_blog' %}">Marketplace</a>
                         </li>
 
                         <!-- Dropdown -->
@@ -105,12 +102,16 @@
                         <p>Need a push to your community? Make it on your icebreaker community app.</p>
 
                           <ul class="list-unstyled list-inline text-center py-2">
+                              {% if request.user.is_authenticated %}
+
                             <li class="list-inline-item">
                               <h5 class="mb-1">Register for free</h5>
                             </li>
+                              {% else %}
                             <li class="list-inline-item">
-                              <a href="#!" class="btn btn-danger btn-rounded">Sign up!</a>
+                              <a href="{% url 'register:user_register' %}" class="btn btn-danger btn-rounded">Sign up!</a>
                             </li>
+                              {% endif %}
                           </ul>
                       </div>
                       <!-- Grid column -->
@@ -121,16 +122,14 @@
                       <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
                         <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
                         <p>
-                          <a href="#!">community</a>
+                          <a href="{% url 'community:my_group' %}">community</a>
                         </p>
                         <p>
-                          <a href="#!">fundraiser</a>
+                          <a href="{% url 'startFundraiser:home' %}">fundraiser</a>
                         </p>
+
                         <p>
-                          <a href="#!">payment</a>
-                        </p>
-                        <p>
-                          <a href="#!">queries</a>
+                          <a href="{% url 'polls:query_view' %}">queries</a>
                         </p>
                       </div>
                       <!-- Grid column -->
@@ -141,17 +140,9 @@
                       <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
                         <h6 class="text-uppercase mb-4 font-weight-bold">Useful links</h6>
                         <p>
-                          <a href="#!">Your Account</a>
+                          <a href="{% url 'community:my_group' %}">Your Account</a>
                         </p>
-                        <p>
-                          <a href="#!">Become an Affiliate</a>
-                        </p>
-                        <p>
-                          <a href="#!">Shipping Rates</a>
-                        </p>
-                        <p>
-                          <a href="#!">Help</a>
-                        </p>
+
                       </div>
 
                       <!-- Grid column -->
@@ -161,7 +152,7 @@
                       <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
                         <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
                         <p>
-                          <i class="fa fa-home mr-3"></i> New York, NY 10012, US</p>
+                          <i class="fa fa-home mr-3"></i> Sri city, india</p>
                         <p>
                           <i class="fa fa-envelope mr-3"></i> info@gmail.com</p>
                         <p>
@@ -185,7 +176,7 @@
                         <!--Copyright-->
                         <p class="text-center text-md-left">© 2018 Copyright:
                           <a href="https://mdbootstrap.com/education/bootstrap/">
-                            <strong> MDBootstrap.com</strong>
+                            <strong> IceBreaker.com</strong>
                           </a>
                         </p>
 
@@ -196,30 +187,7 @@
                       <div class="col-md-5 col-lg-4 ml-lg-0">
 
                         <!-- Social buttons -->
-                        <div class="text-center text-md-right">
-                          <ul class="list-unstyled list-inline">
-                            <li class="list-inline-item">
-                              <a class="btn-floating btn-sm rgba-white-slight mx-1">
-                                <i class="fa fa-facebook"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a class="btn-floating btn-sm rgba-white-slight mx-1">
-                                <i class="fa fa-twitter"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a class="btn-floating btn-sm rgba-white-slight mx-1">
-                                <i class="fa fa-google-plus"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a class="btn-floating btn-sm rgba-white-slight mx-1">
-                                <i class="fa fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
+
 
                       </div>
                       <!-- Grid column -->
