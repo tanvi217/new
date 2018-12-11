@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'api/funds/',blog_views.fundsListView.as_view()),
     url(r'^messenger/$',views.message, name="messenger"),
     path('',include('django.contrib.auth.urls')),
+    path('accounts/', include('register.urls')),
 
 ]
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Profile
+from .models import Profile,Temp
 from .forms import UserLoginForm,UserRegistrationForm,UserEditForm,ProfileEditForm
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
@@ -24,6 +24,22 @@ from django.contrib.auth.models import User
 #from django.contrib.auth import login, authenticate
 from django.core.mail import send_mail
 from django.db.models import Q
+###password change
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+#captchafields
+import json
+import urllib
+
+from django.shortcuts import render, redirect
+from django.conf import settings
+from django.contrib import messages
+
+####
+from startFundraiser.models import Campaign
+from startFundraiser.forms import BackersForm
+
 
 def account_activation_sent(request):
     print('-------------in account_activation_sent-------------')
@@ -40,15 +56,15 @@ def user_login(request):
 
             if user:
                 if user.is_active:
-                    login(request, user)
+                    login(request, user,backend='django.contrib.auth.backends.ModelBackend')
                     #return redirect('project:post_list')
                     return redirect("http://127.0.0.1:8000/")
 
                 else:
-                    return HttpResponse('User is not active')
+                    return render(request, 'register/error.html')
 
             else:
-                return HttpResponse('User is not available')
+                return render(request, 'register/error.html')
 
     else:
         form = UserLoginForm()
@@ -72,6 +88,10 @@ def email_verify(form):
 
 def user_register(request):
     if request.method == 'POST':
+
+        #social = request.POST['social']
+        #print(type(social),social)
+
         form = UserRegistrationForm(request.POST or None)
         if form.is_valid():
             new_user = form.save(commit=False)
@@ -83,6 +103,11 @@ def user_register(request):
             last_name = form.data['last_name']
             email = form.data['email']
             password1 = form.data['password1']
+            names = Temp.objects.values_list('temp_user',flat=True)
+            if username in names:
+                return HttpResponse('this is cannot be used for now ')
+            else:
+                Temp.objects.create(temp_user=username,otp=b)
             context1 = {
                 'username':username,
                 'first_name':first_name,
@@ -96,24 +121,35 @@ def user_register(request):
             #Profile.objects.create(user = new_user)
             return render(request,'register/verify.html', context1)
     else:
+
         form = UserRegistrationForm()
     context = {
         'form':form
     }
-    return render(request,'register/register.html', context)
+    return render(request,'register/register.html', context) #
 
 def new_user_reg(request):
     if request.method == 'POST':
+        otp1=request.POST['typed_otp']
+        otp4=int(otp1)
         username = request.POST['username']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        email = request.POST['email']
-        password1 = request.POST['password1']
-        new_user = User.objects.create(username=username,first_name=first_name,last_name=last_name,email=email)
-        new_user.set_password(request.POST['password1'])
-        new_user.save()
-        Profile.objects.create(user = new_user)
-        login(request,new_user)
+        otp2=Temp.objects.get(temp_user=username).otp
+        otp3=int(otp2)
+        if otp3 == otp4:
+            global num
+            num=1
+            username = request.POST['username']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            email = request.POST['email']
+            password1 = request.POST['password1']
+            new_user = User.objects.create(username=username,first_name=first_name,last_name=last_name,email=email)
+            new_user.set_password(request.POST['password1'])
+            new_user.save()
+            Profile.objects.create(user = new_user)
+            login(request,new_user,backend='django.contrib.auth.backends.ModelBackend')
+        else:
+            return HttpResponse('Please go back check your otp')
     return redirect("http://127.0.0.1:8000/")
 
 
@@ -121,17 +157,32 @@ def new_user_reg(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
+
         user_form = UserEditForm(data=request.POST or None, instance=request.user)
         profile_form = ProfileEditForm(data=request.POST or None, instance=request.user.profile, files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            return render(request, "startFundraiser/base.html")
+            return render(request, "startFundraiser/home.html")
 
     else:
-        user_form = UserEditForm(instance=request.user)
+
+
+        pro = request.user
+        projects = Campaign.objects.filter(user = pro)
+
+        #else:
+        #    project2 = projects
+        if Profile.objects.filter(user = pro):
+            #Profile.objects.create(user = pro)
+
+            user_form = UserEditForm(instance=request.user)
         #print(request.user)
-        profile_form = ProfileEditForm(instance=request.user.profile)
+            profile_form = ProfileEditForm(instance=request.user.profile)
+        else:
+            Profile.objects.create(user = pro)
+            user_form = UserEditForm(instance=request.user)
+            profile_form = ProfileEditForm(instance=request.user.profile)
         #if num < 1:
         #    Profile.objects.create(user = request.user)
 
@@ -145,7 +196,29 @@ def edit_profile(request):
     contexts = {
         'user_form': user_form,
         'profile_form': profile_form,
+        'projects':projects,
+
+
+
+
 
     }
 
     return render(request, 'register/edit_profile.html', contexts)
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('register:edit_profile')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'register/chnage_password.html', {
+        'form': form
+    })
