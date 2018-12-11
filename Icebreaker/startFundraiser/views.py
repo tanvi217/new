@@ -327,9 +327,9 @@ def del_post(request, id):
 
 
 def like_camp(request):
-    campaign = get_object_or_404(Campaign, id=request.POST.get('id'))
+    campaign = get_object_or_404(Campaign, id = request.POST.get('id'))
     is_liked = False
-    if campaign.likes.filter(id=request.user.id).exists():
+    if campaign.likes.filter(id = request.user.id).exists():
         is_liked = False
         campaign.likes.remove(request.user)
     else:
@@ -337,13 +337,13 @@ def like_camp(request):
         campaign.likes.add(request.user)
     context = {
         'campaign': campaign,
-        'is_liked': is_liked,
-        'total_likes': campaign.total_likes()
+        'is_liked' : is_liked,
+        'total_likes':campaign.total_likes()
     }
 
     if request.is_ajax():
         html = render_to_string('startFundraiser/like_section.html', context, request=request)
-        return JsonResponse({'form': html})
+    return JsonResponse({'form': html})
 
 
 def index(request):
