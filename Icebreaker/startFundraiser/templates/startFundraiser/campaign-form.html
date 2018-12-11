@@ -1,8 +1,14 @@
 
 
 {% extends 'startFundraiser/home.html' %}
+{% load static %}
 {% block title %}Start a Campaign{% endblock %}
 {% load widget_tweaks %}
+{% block bg_img %}
+<section class="sec1">
+    <img src="{% static 'startFundraiser/images/bg_2.jpg' %}">
+</section>
+{% endblock %}
 {% block content %}
 <br><br><br><br><br><br>
 <h1 style="width:80%;margin:auto;">Start Your Campaign!</h1>

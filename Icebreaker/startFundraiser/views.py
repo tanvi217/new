@@ -14,21 +14,21 @@ from .forms import CampaignForm, UserForm, UpdateForm, FaqsForm, PostForm, creat
     RewardModelFormset
 from django.contrib.auth import get_user_model
 import re
-#django-rest API
+# django-rest API
 from rest_framework import status
-from .models import Backers ##API models
+from .models import Backers  ##API models
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import fundsSerializer
 from rest_framework.views import APIView
 
-from .extras import generate_order_id,transact , generate_client_token  #payment
+from .extras import generate_order_id, transact, generate_client_token  # payment
 from django.contrib import messages
-#from django_currentuser.middleware import (get_current_user, get_current_authenticated_user)
+# from django_currentuser.middleware import (get_current_user, get_current_authenticated_user)
 from django import template
 from django.template import Context
 from django.template.loader import render_to_string, get_template
-from django.core.mail import send_mail,EmailMessage
+from django.core.mail import send_mail, EmailMessage
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
@@ -154,7 +154,7 @@ def add_faq(request, pk):
             return redirect('startFundraiser:campaign_detail', campaign_id=pk)
     else:
         form = FaqsForm()
-    return render(request, 'startFundraiser/add_faq.html', {'form': form, 'campaign':campaign})
+    return render(request, 'startFundraiser/add_faq.html', {'form': form, 'campaign': campaign})
 
 
 def index(request):
@@ -207,12 +207,12 @@ def validate_start_campaign(start, end, file_type):
     delta = int(duration.days)
     print(delta)
     print(start)
-    print(date.today())
+    print(start < datetime.date.today())
     if delta > 40 or delta < 7:
         error_message['duration'] = 'Check the campaign duration'
-    if file_type not in IMAGE_FILE_TYPES:
+    if file_type not in IMAGE_FILE_TYPES and file_type != 'empty':
         error_message['image']: 'Image file must be PNG, JPG, or JPEG'
-    if start < date.today():
+    if start < datetime.date.today():
         error_message['startDate']: 'Re-enter the start date to a future date'
 
     return error_message
@@ -224,9 +224,11 @@ def start_campaign(request):
     if form.is_valid():
         campaign = form.save(commit=False)
         campaign.user = request.user
-        campaign.image = request.FILES['image']
-        file_type = campaign.image.url.split('.')[-1]
-        file_type = file_type.lower()
+        file_type = 'empty'
+        if campaign.image:
+            campaign.image = request.FILES['image']
+            file_type = campaign.image.url.split('.')[-1]
+            file_type = file_type.lower()
         start = form.cleaned_data['start_Date']
         end = form.cleaned_data['end_Date']
         error_message = validate_start_campaign(start, end, file_type)
@@ -350,9 +352,9 @@ def del_post(request, id ):
 
 
 def like_camp(request):
-    campaign = get_object_or_404(Campaign, id = request.POST.get('id'))
+    campaign = get_object_or_404(Campaign, id=request.POST.get('id'))
     is_liked = False
-    if campaign.likes.filter(id = request.user.id).exists():
+    if campaign.likes.filter(id=request.user.id).exists():
         is_liked = False
         campaign.likes.remove(request.user)
     else:
@@ -360,13 +362,17 @@ def like_camp(request):
         campaign.likes.add(request.user)
     context = {
         'campaign': campaign,
-        'is_liked' : is_liked,
-        'total_likes':campaign.total_likes()
+        'is_liked': is_liked,
+        'total_likes': campaign.total_likes()
     }
 
     if request.is_ajax():
         html = render_to_string('startFundraiser/like_section.html', context, request=request)
     return JsonResponse({'form': html})
+
+
+def page_not_found(request):
+    return render(request, 'startFundraiser/nopage.html')
 
 
 def index(request):
@@ -603,14 +609,14 @@ def update_transaction_records(request,pk):
 
 # django API
 class fundsListView(APIView):
-    def get(self,request):
+    def get(self, request):
         fundings = Backers.objects.all()
-        serializer = fundsSerializer(fundings,many=True)
+        serializer = fundsSerializer(fundings, many=True)
         return Response(serializer.data)
 
-    def post(self,request):
+    def post(self, request):
         serializer = fundsSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)

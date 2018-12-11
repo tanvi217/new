@@ -7,30 +7,33 @@ from django.utils import timezone
 from ckeditor.widgets import CKEditorWidget
 from django.utils.translation import gettext_lazy as _
 from .models import Campaign, Faqs, Update, Post, comment, Backers, reply, Reward
+from django import forms
+from django.forms import DateInput
 import datetime
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
+import datetime  # for checking renewal date range.
+from django.core.exceptions import ValidationError
 
 
 class CampaignForm(forms.ModelForm):
-    start_Date = forms.DateField(widget=SelectDateWidget(
-        empty_label=("Choose Year",
-                     "Choose Month",
-                     "Choose Day"),
-    ),
-        initial=timezone.now())
-    end_Date = forms.DateField(widget=SelectDateWidget(
-        empty_label=("Choose Year",
-                     "Choose Month",
-                     "Choose Day"),
-    ),
-        initial=timezone.now())
+
+    def clean_start_Date(self):
+        data = self.cleaned_data['start_Date']
+        if data < datetime.date.today():
+            raise ValidationError(_('Invalid date - in past'))
+        if data > datetime.date.today() + datetime.timedelta(weeks=4):
+            raise ValidationError(_('Invalid date - more than 4 weeks ahead'))
+
+        return data
 
     class Meta:
         model = Campaign
-        fields = ['campaign_Title', 'campaign_Tagline', 'campaign_Category', 'country', 'city', 'overview', 'goal',
+        fields = ['campaign_Title', 'campaign_Tagline', 'campaign_Category', 'country', 'city', 'overview', 'goal', 'start_Date', 'end_Date',
                   'story', 'tags', 'image']
         widgets = {
+            'start_Date': DateInput(attrs={'type': 'date'}),
+            'end_Date': DateInput(attrs={'type': 'date'}),
             'campaign_Title': forms.TextInput(attrs={'required': True, 'placeholder': 'Title'}),
             'campaign_': forms.TextInput(attrs={'required': True}),
             'overview': forms.Textarea(attrs={'cols': 10, 'rows': 10})
@@ -43,7 +46,6 @@ class CampaignForm(forms.ModelForm):
             'overview': _('Tell us about your campaign in a few words.'),
             'story': _('What would you like the supporters to know? '),
             'tags': _('Words that you\'d associate your campaign with.'),
-            'end_Date': _('Duration of the campaign must be between 7 and 40 days.')
         }
         error_messages = {
             'campaign_Tagline': {

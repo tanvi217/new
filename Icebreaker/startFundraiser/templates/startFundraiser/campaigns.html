@@ -19,6 +19,7 @@
   <a href="{% url 'startFundraiser:social' %}">Social</a>
   <a href="{% url 'startFundraiser:tech' %}">Tech</a>
   <a href="{% url 'startFundraiser:campaigns' %}">All</a>
+  <a href="{% url 'startFundraiser:start_campaign' %}">Start Campaign</a>
 </div>
 <!--End sidenav-->
 {% for project in projects %}
@@ -49,7 +50,7 @@
       </div>
       <div class="progress">
          {% with per=project.pledged|div:project.goal|mul:100|floatformat %}
-         <h4 class="progress-bar progress-bar-success" role="progressbar" style="width: {{ per }}%">{{ per }}% funded</h4>
+         <h4 class="progress-bar progress-bar-success" role="progressbar" style="width: {{ per }}%" aria-valuemin="0" aria-valuemax="100">{{ per }}% funded</h4>
          {% endwith %}
       </div>
       <div class="caption">

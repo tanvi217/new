@@ -53,7 +53,7 @@ class Campaign(models.Model):
     )
     country = models.CharField(max_length=50, default='India')
     city = models.CharField(max_length=50)
-    image = models.ImageField(upload_to="media", blank=True, null=True)
+    image = models.ImageField(upload_to="media")
     video = models.ImageField(upload_to="media", blank=True, null=True)
     tags = models.CharField(max_length=200, blank=True, null=True, validators=[validate_tags])
     overview = models.TextField(max_length=500)
