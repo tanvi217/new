@@ -1,6 +1,5 @@
-{% extends 'startFundraiser/home.html' %}
+{% extends 'marketplace/test.html' %}
 {% block content %}
-<br><br><br><br><br><br>
 <div class="trend-details">
   <div class="img">
     <img src="{{ details.image.url }}"/>
@@ -8,8 +7,10 @@
   <h2>{{details.product_title}}</h2>
   <p>{{details.overview}}</p>
   <p>{{details.date}}</p>
-  <form class="" action="index.html" method="post">
-    <input type="submit"  value="Buy">
+  <p>{{details.quantity}}</p>
+  <form action="{% url 'marketplace:add_to_cart' id=details.pk %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Add to cart</button>
   </form>
 </div>
 {% endblock %}

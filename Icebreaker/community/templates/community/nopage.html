@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>page not found</title>
-</head>
-<body>
-<center><h1>no such page</h1></center>
-</body>
-</html>
+{% extends 'community/base/login-navbar-mdbs.html' %}
+{% load static %}
+
+    {% block title %}404{% endblock %}
+    {% block content %}
+<br><br><br>
+                    <div class="container">
+
+<center><h1>No such page</h1></center>
+<br><br>
+    <img src='{% static "img/community/404.jpg" %}'>
+
+<br>
+<br><br>
+                    </div>
+{% endblock %}

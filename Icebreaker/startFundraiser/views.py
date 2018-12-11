@@ -2,18 +2,34 @@ from django.shortcuts import render, get_object_or_404, render_to_response, redi
 from django.contrib.auth import authenticate, login, logout
 from django.forms import formset_factory, modelformset_factory
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.urls import reverse
 from django.db.models import Q, F
 from datetime import date, datetime, timedelta
 from django.template import loader
 from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.views import generic
-from django.template.loader import render_to_string
 
 from .models import Campaign, Faqs, Update, Post, comment, reply, Reward
 from .forms import CampaignForm, UserForm, UpdateForm, FaqsForm, PostForm, createcomment, createreply, BackersForm, \
     RewardModelFormset
 from django.contrib.auth import get_user_model
 import re
+#django-rest API
+from rest_framework import status
+from .models import Backers ##API models
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializer import fundsSerializer
+from rest_framework.views import APIView
+
+from .extras import generate_order_id,transact , generate_client_token  #payment
+from django.contrib import messages
+#from django_currentuser.middleware import (get_current_user, get_current_authenticated_user)
+from django import template
+from django.template import Context
+from django.template.loader import render_to_string, get_template
+from django.core.mail import send_mail,EmailMessage
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
@@ -359,3 +375,16 @@ def index(request):
         return render(request, 'startFundraiser/campaigns.html', {'projects': projects})
     else:
         return render(request, 'startFundraiser/campaigns.html', {'projects': projects})
+
+class fundsListView(APIView):
+    def get(self,request):
+        fundings = Backers.objects.all()
+        serializer = fundsSerializer(fundings,many=True)
+        return Response(serializer.data)
+
+    def post(self,request):
+        serializer = fundsSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data,status=status.HTTP_400_BAD_REQUEST)

@@ -42,7 +42,7 @@ def user_login(request):
                 if user.is_active:
                     login(request, user)
                     #return redirect('project:post_list')
-                    return redirect("http://127.0.0.1:8000/startfundraiser/")
+                    return redirect("http://127.0.0.1:8000/")
 
                 else:
                     return HttpResponse('User is not active')
@@ -60,7 +60,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return redirect("http://127.0.0.1:8000/startfundraiser/")
+    return redirect("http://127.0.0.1:8000/")
 
 #fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
 def email_verify(form):
@@ -114,7 +114,7 @@ def new_user_reg(request):
         new_user.save()
         Profile.objects.create(user = new_user)
         login(request,new_user)
-    return redirect("http://127.0.0.1:8000/startfundraiser/")
+    return redirect("http://127.0.0.1:8000/")
 
 
 

@@ -150,6 +150,19 @@ CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 CKEDITOR_IMAGE_BACKEND = "pillow"
 
+if DEBUG:
+    # test keys
+    STRIPE_PUBLISHABLE_KEY = 'pk_test_uv520wrOAmj5S0R6pSMqfQuO'
+    STRIPE_SECRET_KEY = 'sk_test_9RtMPnED0F2g7hQJ3eOpvRBe'
+    BT_ENVIRONMENT='sandbox'
+    BT_MERCHANT_ID='dvz9yrrcm82f2wyw'
+    BT_PUBLIC_KEY='mt4yjrfht47g24m6'
+    BT_PRIVATE_KEY='84030d13637a181d7c5f198dabbca0c8'
+else:
+    # live keys
+    STRIPE_PUBLISHABLE_KEY = 'YOUR STRIPE LIVE PUB KEY'
+    STRIPE_SECRET_KEY = 'YOUR STRIPE LIVE SECRET KEY'
+
 
 CKEDITOR_CONFIGS = {
     'default':{

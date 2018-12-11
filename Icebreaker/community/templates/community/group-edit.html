@@ -1,6 +1,8 @@
-{% extends 'community/base/login-navbar.html' %}
+{% extends 'community/base/login-navbar-mdbs.html' %}
     {% block title %}group edit{% endblock %}
     {% block content %}
+                    <div class="container">
+
 <!--<!DOCTYPE html>-->
 <!--<html>-->
   <!--<head>-->
@@ -190,7 +192,7 @@
 	<br><br>
 
     <center>
-        <div id="map" style="width:80%; height:50%"></div></center>
+        <div id="map" class="z-depth-5" style="height:50%"></div></center>
 
     <p>Click on the map to add markers.</p><br><br>
 
@@ -355,4 +357,5 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoxHIV4EUz3PsPOwB_ehuLLDu4OE0ELLc&callback=initMap">
     </script>
+                    </div>
   {% endblock %}

@@ -1,11 +1,11 @@
-{% extends 'startFundraiser/home.html' %}
+{% extends 'marketplace/test.html' %}
 {% block content %}
-<br><br><br><br><br><br>
 {% load static from staticfiles %}
+<!--
   <div class="main">
     <h1>products</h1>
     <hr>
-    <!-- Portfolio Gallery Grid -->
+
       <div class="row">
           {% for product in products %}
             <div class="column">
@@ -22,8 +22,30 @@
 
 
           {% endfor %}
-    <!-- END GRID -->
+
       </div>
-    <!-- END MAIN -->
+
+  </div>-->
+  <div class="container">
+  <div class="card-deck">
+      {% for product in products %}
+    <div class="card" style="width:400px">
+      <img class="card-img-top" src="{{product.image.url}}" alt="Card image" style="width:100%; height:200px;">
+      <div class="card-body">
+        <h4 class="card-title"><a style="color:inherit;" href = "{% url 'marketplace:product_details' slug=product.pk %}">{{product.product_title}}</a></h4>
+        <hr>
+        <h4> <span class="label label-default">{{ product.product_type }}</span></h4>
+        <h5><footer class="">by <cite>{{product.fullname}}</cite></footer></h5>
+
+        <p class="card-text">{{product.snippept}}</p>
+        <p class="card-text">Quantity: {{product.quantity}}</p>
+        <p class="card-text">Cost: {{product.cost}}</p>
+
+      </div>
+    </div>
+
+      {% endfor %}
   </div>
+    </div>
+
 {% endblock %}

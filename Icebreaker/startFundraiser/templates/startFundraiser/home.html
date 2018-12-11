@@ -36,6 +36,7 @@
                   <li><a class="active" href="{% url 'polls:query_view' %}">Contact Us</a></li>
                   {% if user.is_authenticated %}
                   <li><a href="{% url 'startFundraiser:campaigns' %}">Howdy {{ request.user }}!</a></li>
+                  <li><a href="{% url 'register:user_logout' %}">Logout</a></li>
                   {% else %}
                   <li><a href="{% url 'register:user_register' %}">SignUp</a></li>
                   <li><a href="{% url 'register:user_login' %}">Login</a></li>
