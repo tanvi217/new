@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect,get_object_or_404,reverse
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.conf import settings
 #from marketplace.serializer import products_boughtSerializer #
 from rest_framework.views import APIView
 from .models import product, Order, OrderItem ,Transaction
@@ -15,6 +16,12 @@ from django.template.loader import render_to_string
 import datetime
 import stripe
 from .extras import generate_order_id, transact, generate_client_token
+from django.contrib import messages
+#from django_currentuser.middleware import (get_current_user, get_current_authenticated_user)
+from django import template
+from django.template import Context
+from django.template.loader import render_to_string, get_template
+from django.core.mail import send_mail,EmailMessage
 
 def test(request):
     product_blog = product.objects.all()
@@ -105,10 +112,14 @@ def add_to_cart(request, id):
             user_order.items.add(order_item)
             user_order.ref_code = ref_code
             user_order.save()
+            prod.quantity = int(prod.quantity) - int(1)
+            prod.save()
         else:
             order_item, status = OrderItem.objects.get_or_create(product=prod, ref_code=user_order.ref_code)
             user_order.items.add(order_item)
             user_order.save()
+            prod.quantity = int(prod.quantity) - int(1)
+            prod.save()
         order_item.cost = order_item.qty * order_item.product.cost
         order_item.save()
         return render(request, 'marketplace/cart.html', {'order':user_order})
@@ -118,7 +129,7 @@ def add_to_cart(request, id):
         order_item = OrderItem.objects.get(product=prod, ref_code=user_order.ref_code)
         order_item.cost = order_item.qty * order_item.product.cost
         order_item.save()
-        return render(request, 'marketplace/cart.html', {'order':user_order})
+        return render(request, 'marketplace/blog.html', {'id':prod.pk})
 
 def add_quantity(request, id):
     item = OrderItem.objects.get(pk=id)
@@ -138,95 +149,98 @@ def delete(request, id):
     item.delete()
     return redirect('marketplace:products_blog')
 
+def add_tocart(request):
+    return render(request, 'marketplace/cart.html')
+
 @login_required()
 def checkout(request, **kwargs):
     client_token = generate_client_token()
     existing_order = get_user_pending_order(request)
+    amt = int(existing_order.get_cart_total())
+    publishKey = settings.STRIPE_PUBLISHABLE_KEY
     if request.method == 'POST':
-        result = transact({
-            'amount': existing_order.get_cart_total(),
-            'payment_method_nonce': request.POST['payment_method_nonce'],
-            'options': {
-                "submit_for_settlement": True
-            }
-        })
+        token = request.POST.get('stripeToken', False)
+        amt = int(existing_order.get_cart_total())
+        if token:
+            # STRIPE
+            try:
+                charge = stripe.Charge.create(
+                    amount= amt,
+                    currency='usd',
+                    description='Example charge',
+                    source=token,
+                )
 
-        if result.is_success or result.transaction:
-            token= result.transaction.id
-            # return redirect(reverse('marketplace:update_records',
-            #         kwargs={
-            #             'token': result.transaction.id
-            #         })
-            #     )
-            order_to_purchase = get_user_pending_order(request)
-
-            # update the placed order
-            order_to_purchase.is_ordered=True
-            order_to_purchase.date_ordered=datetime.datetime.now()
-            order_to_purchase.save()
-
-            # get all items in the order - generates a queryset
-            order_items = order_to_purchase.items.all()
-
-            # update order items
-            order_items.update(is_ordered=True, date_ordered=datetime.datetime.now())
-
-
-
-            # create a transaction
-            transaction = Transaction(user=request.user,
-                                    token=token,
-                                    order_id=order_to_purchase.id,
-                                    amount=order_to_purchase.get_cart_total(),
-                                    success=True)
-            # save the transcation (otherwise doesn't exist)
-            transaction.save()
-
-
-            messages.info(request, "Thank you! Your purchase was successful!")
-            return HttpResponse("Saved")
-
+                return redirect(reverse('startFundraiser:update_records',
+                        kwargs={
+                            'token': token,
+                            'pk':pk,
+                            'amount':amt,
+                        })
+                    )
+            except stripe.CardError as e:
+                message.info(request, "Your card has been declined.")
         else:
-            for x in result.errors.deep_errors:
-                messages.info(request, x)
-            return redirect(reverse('marketplace:checkout'))
+            # BRAINTREE PAYPAL
+            result = transact({
+                'amount': amt,
+                'payment_method_nonce': request.POST['payment_method_nonce'],
+                'options': {
+                    "submit_for_settlement": True
+                }
+            })
+
+            if result.is_success or result.transaction:
+                entry_token =result.transaction.id
+                existing_order = get_user_pending_order(request)
+                # update the placed order
+                existing_order.is_ordered=True
+                existing_order.date_ordered=datetime.datetime.now()
+                existing_order.save()
+                order_items = existing_order.items.all()
+                order_items.update(is_ordered=True, date_ordered=datetime.datetime.now())
+                # create a transaction
+                transaction = Transaction(user=request.user,
+                                        token=entry_token,
+                                        order_id=existing_order.id,
+                                        amount=existing_order.get_cart_total(),
+                                        success=True)
+                transaction.save()
+
+                ## mail notification as funds receivd to the project #
+                User = get_user_model()
+                uname = request.user.username
+                Funds = existing_order.get_cart_total()
+                order_id = existing_order.id
+                mail_id = User.objects.get(username = uname).email
+
+                subject = "Recived Funds"
+                to = ['ruthala.shiva512@gmail.com',]
+                to.append(mail_id)
+                from_email = 'ruthala.shiva512@gmail.com'
+
+                details = {
+                    'donar': uname,
+                    'amount': Funds,
+                    'project': order_id,
+                }
+
+                message = get_template('startFundraiser/mail.html').render(dict(details))
+                msg = EmailMessage(subject, message, to=to, from_email=from_email)
+                msg.content_subtype = 'html'
+                msg.send()
+
+                messages.info(request, "Thank you! Your purchase was successful!")
+                return HttpResponse(f"{entry_token}")
+            else:
+                for x in result.errors.deep_errors:
+                    messages.info(request, x)
+                return redirect(reverse('startFundraiser:checkout'))
 
     context = {
-        'order': existing_order,
+        'order': amt,
         'client_token': client_token,
+        'STRIPE_PUBLISHABLE_KEY': publishKey
     }
-    return render(request, 'marketplace/checkout.html', context)
 
-@login_required()
-def update_transaction(request, token):
-    # get the order being processed
-    order_to_purchase = get_user_pending_order(request)
-
-    # update the placed order
-    order_to_purchase.is_ordered=True
-    order_to_purchase.date_ordered=datetime.datetime.now()
-    order_to_purchase.save()
-
-    # get all items in the order - generates a queryset
-    order_items = order_to_purchase.items.all()
-
-    # update order items
-    order_items.update(is_ordered=True, date_ordered=datetime.datetime.now())
-
-
-
-    # create a transaction
-    transaction = Transaction(user=request.user,
-                            token=token,
-                            order_id=order_to_purchase.id,
-                            amount=order_to_purchase.get_cart_total(),
-                            success=True)
-    # save the transcation (otherwise doesn't exist)
-    transaction.save()
-
-
-    messages.info(request, "Thank you! Your purchase was successful!")
-    return HttpResponse("Saved")
-
-def add_tocart(request):
-    return render(request, 'marketplace/cart.html')
+    return render(request, 'startFundraiser/checkout.html', context)

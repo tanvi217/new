@@ -44,18 +44,17 @@
   <div class="card">
     <div class="card-image">
       <img src="{{product.image.url}}" style="width:100%; height:200px;">
-      <span class="card-title"><a style="color:inherit;" href = "{% url 'marketplace:product_details' slug=product.pk %}">{{product.product_title}}</a></span>
     </div>
     <div class="card-content">
-    <p>  {{ product.product_type }}</p>
+      <span class="card-title"><a style="color:inherit;" href = "{% url 'marketplace:product_details' slug=product.pk %}"><h4>{{product.product_title}}</h4></a></span>
+
     <hr>
-      <p>{{product.snippept}}</p>
-      <p>Quantity: Rs.{{product.quantity}}</p>
-      <p>Cost: {{product.cost}}</p>
+      <p><b>Type: </b>{{ product.product_type }}</p>
+      <p><b>{{product.snippept}}</b></p>
+      <p><b>Quantity:</b> {{product.quantity}}</p>
+      <p><b>Cost:</b> Rs.{{product.cost}}</p>
     </div>
-    <div class="card-action">
-    <center>  <a href="#">Buy</a></center>
-    </div>
+
   </div>
 </div>
 {% endfor %}

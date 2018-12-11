@@ -33,10 +33,12 @@
                   <li><a class="active" href="{% url 'startFundraiser:campaigns' %}">Explore</a></li>
                   <li><a class="active" href="{% url 'marketplace:products_blog' %}">Marketplace</a></li>
                   <li><a class="active" href="{% url 'community:view_group' %}">Communities</a></li>
+                  <li class="nav-item" id="links"><a href="{% url 'startFundraiser:blog_post' %}">notifications</a></li>
                   <li><a class="active" href="{% url 'polls:query_view' %}">Contact Us</a></li>
                   {% if user.is_authenticated %}
-                  <li><a href="{% url 'startFundraiser:campaigns' %}">Howdy {{ request.user }}!</a></li>
                   <li><a href="{% url 'register:user_logout' %}">Logout</a></li>
+                  <li><a href="{% url 'register:edit_profile' %}">Howdy {{ request.user }}!</a></li>
+
                   {% else %}
                   <li><a href="{% url 'register:user_register' %}">SignUp</a></li>
                   <li><a href="{% url 'register:user_login' %}">Login</a></li>

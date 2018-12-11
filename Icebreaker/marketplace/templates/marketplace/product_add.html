@@ -70,7 +70,7 @@
           <center><button type="submit" class="btn btn-primary">Submit</button></center>
         </form> -->
         <div class="row">
-          <form class="col s10 offset-s1" action="{% url 'marketplace:add_product' %}" method="post" enctype="multipart/form-data">
+          <form class="col s10 offset-s1"  method="post" enctype="multipart/form-data">
             <h4 class="center-align">{{heading}}</h4>
             {% csrf_token %}
             <div class="row">
@@ -132,7 +132,7 @@
 
               <div class="input-field col s6">
                 {{form.cost| add_class:"materialize-textarea"| attr:"id:cost"}}
-                <label for="{{form.cost.id_for_label}}">overview</label>
+                <label for="{{form.cost.id_for_label}}">Cost</label>
                 {% if form.cost.help_text %}
                   <span class="helper-text">{{form.cost.help_text}}</span>
                 {% endif %}

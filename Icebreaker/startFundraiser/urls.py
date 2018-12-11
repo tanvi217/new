@@ -27,12 +27,11 @@ urlpatterns = [
     url(r'^campaign/(?P<pk>\d+)/comment/$', views.add_comment, name='add_comment'),
     url(r'^campaign/(?P<pk>\d+)/faq/$', views.add_faq, name='add_faq'),
     url(r'^campaign/(?P<pk>\d+)/rewards/$', views.add_rewards, name='campaign_rewards'),
-    url(r'^campaign/(?P<pk>\d+)/claim/$', views.claim_reward, name='claim'),
-
-
+    #url(r'^campaign/(?P<pk>\d+)/claim/$', views.claim_reward, name='claim'),
     url(r'^index/$', views.index, name='index'),
     url(r'^posts/$', views.blog_post, name='blog_post'),
-    url(r'^campaign/(?P<pk>\d+)/support/$', views.campaign_support, name='campaign_support'),
-
+    url(r'^campaign/(?P<pk>\d+)/support/$', views.pay, name='campaign_support'),
+    url(r'^checkout/(?P<pk>\d+)/$', views.checkout, name='checkout'),
+    url(r'^checkout1/(?P<id>\d+)/$', views.checkout1, name='checkout1'),
     url(r'^like/$', views.like_camp, name='like_camp'),
 ]

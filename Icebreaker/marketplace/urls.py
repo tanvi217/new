@@ -17,6 +17,6 @@ urlpatterns = [
     url(r'remove_quantity/(?P<id>\d+)/$', views.remove_quantity, name="remove_quantity"),
     url(r'del_quantity/(?P<id>\d+)/$', views.delete, name="del_quantity"),
     url(r'checkout/$', views.checkout, name="checkout"),
-    url(r'^update-transaction/(?P<token>[-\w]+)/$', views.update_transaction, name='update_records'),
+    #url(r'^update-transaction/(?P<token>[-\w]+)/$', views.update_transaction, name='update_records'),
     url(r'add_tocart/$', views.add_tocart, name="add_tocart"),
 ]

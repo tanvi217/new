@@ -157,7 +157,6 @@ def new_user_reg(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-
         user_form = UserEditForm(data=request.POST or None, instance=request.user)
         profile_form = ProfileEditForm(data=request.POST or None, instance=request.user.profile, files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
@@ -193,18 +192,9 @@ def edit_profile(request):
         #print(profile_form)
 
 
-    contexts = {
-        'user_form': user_form,
-        'profile_form': profile_form,
-        'projects':projects,
 
 
-
-
-
-    }
-
-    return render(request, 'register/edit_profile.html', contexts)
+    return render(request, 'register/edit_profile.html',{'user_form': user_form,'profile_form': profile_form,'projects':projects,})
 
 @login_required
 def change_password(request):

@@ -9,8 +9,7 @@ from datetime import date, datetime, timedelta
 from django.template import loader
 from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonResponse
 from django.views import generic
-
-from .models import Campaign, Faqs, Update, Post, comment, reply, Reward
+from .models import Campaign, Faqs, Update, Post, comment, reply, Reward, RewardClaimed
 from .forms import CampaignForm, UserForm, UpdateForm, FaqsForm, PostForm, createcomment, createreply, BackersForm, \
     RewardModelFormset
 from django.contrib.auth import get_user_model
@@ -313,34 +312,41 @@ def blog_post(request):
 
 @login_required(login_url="http://127.0.0.1:8000/register/login/")
 def add_post(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post_item = form.save(commit=False)
-            post_item.save()
-            return render(request, 'startFundraiser/base.html')
-            # return HttpResponse("Saved post")
+    if request.user.groups.filter(name ='admin').exists():
+        if request.method == "POST":
+            form = PostForm(request.POST)
+            if form.is_valid():
+                post_item = form.save(commit =False)
+                post_item.save()
+                return redirect('http://127.0.0.1:8000/')
+                #return HttpResponse("Saved post")
+        else:
+            form = PostForm()
+        return render(request, 'startFundraiser/post.html',{'form':form})
     else:
-        form = PostForm()
-    return render(request, 'startFundraiser/post.html', {'form': form})
-
-
-def edit_post(request, id=None):
-    instance = get_object_or_404(Post, pk=id)
-    form = PostForm(request.POST or None, instance=instance)
-    if form.is_valid():
-        form.save()
-        return render(request, 'startFundraiser/base.html')
-    context = {
-        'form': form,
-    }
-    return render(request, 'startFundraiser/post.html', context)
-
-
-def del_post(request, id):
-    instance = get_object_or_404(Post, pk=id)
-    instance.delete()
-    return render(request, 'startFundraiser/base.html')
+        return HttpResponse("Sorry..., You have no previlage")
+@login_required
+def edit_post(request, id= None):
+    if request.user.groups.filter(name ='admin').exists():
+        instance= get_object_or_404(Post, pk= id)
+        form= PostForm(request.POST or None, instance=instance)
+        if form.is_valid():
+            form.save()
+            return redirect('http://127.0.0.1:8000/')
+        context={
+            'form':form,
+        }
+        return render(request, 'startFundraiser/post.html', context)
+    else:
+        return HttpResponse("Sorry..., You have no previlage")
+@login_required
+def del_post(request, id ):
+    if request.user.groups.filter(name ='admin').exists():
+        instance= get_object_or_404(Post, pk= id)
+        instance.delete()
+        return redirect('http://127.0.0.1:8000/')
+    else:
+        return HttpResponse("Sorry..., You have no previlage")
 
 
 def like_camp(request):
@@ -377,6 +383,225 @@ def index(request):
     else:
         return render(request, 'startFundraiser/campaigns.html', {'projects': projects})
 
+# payment
+def pay(request, pk):
+    campaign = get_object_or_404(Campaign, pk=pk)
+    context={
+    'pk':pk,
+
+        }
+    return render(request, 'startFundraiser/support_it.html', context)
+@login_required()
+def checkout1(request, id, **kwargs):
+    reward = get_object_or_404(Reward, pk=id)
+    client_token = generate_client_token()
+    publishKey = settings.STRIPE_PUBLISHABLE_KEY
+
+    if request.method == 'POST':
+        token = request.POST.get('stripeToken', False)
+        if token:
+            try:
+                charge = stripe.Charge.create(
+                    amount=int(reward.amount),
+                    currency='usd',
+                    description='Example charge',
+                    source=token,
+                )
+                print(amt)
+                return redirect(reverse('startFundraiser:update_records',
+                        kwargs={
+                            'token': token,
+                            'pk':pk,
+                            'amount':amt,
+                        })
+                    )
+            except stripe.CardError as e:
+                message.info(request, "Your card has been declined.")
+        else:
+            result = transact({
+                'amount': int(reward.amount),
+                'payment_method_nonce': request.POST['payment_method_nonce'],
+                'options': {
+                    "submit_for_settlement": True
+                }
+            })
+
+            if result.is_success or result.transaction:
+                entry_token =result.transaction.id
+                reward = get_object_or_404(Reward, pk=id)
+
+                # create a transaction record
+                transaction = RewardClaimed(user=request.user,
+                                            reward=reward,
+                                        )
+                transaction.save()
+                reward.claimed = int(reward.claimed) + int(1)
+                reward.save()
+
+                ## mail notification as funds receivd to the project #
+
+                messages.info(request, "Thank you! Your purchase was successful!")
+                #return HttpResponse("updated")
+                #testing
+                #return render(request, 'acknowledgement.html', details)
+                return redirect("http://127.0.0.1:8000/")
+
+                #return redirect(reverse('startFundraiser:update_records',pk))
+            else:
+                for x in result.errors.deep_errors:
+                    messages.info(request, x)
+                return redirect(reverse('startFundraiser:checkout'+str(pk)))
+
+    context = {
+        'order': int(reward.amount),
+        'client_token': client_token,
+        'STRIPE_PUBLISHABLE_KEY': publishKey
+    }
+
+    return render(request, 'startFundraiser/checkout.html', context)
+
+
+
+
+@login_required()
+def checkout(request, pk, **kwargs):
+    campaign = get_object_or_404(Campaign, pk=pk)
+    client_token = generate_client_token()
+    publishKey = settings.STRIPE_PUBLISHABLE_KEY
+
+    if request.method == 'POST':
+        if 'pay' in request.POST:
+            global amt
+            amt = request.POST['pay']
+            global backer
+            backer = request.POST['backer']
+            print(amt)
+        else:
+            token = request.POST.get('stripeToken', False)
+            if token:
+                try:
+                    charge = stripe.Charge.create(
+                        amount=amt,
+                        currency='usd',
+                        description='Example charge',
+                        source=token,
+                    )
+                    print(amt)
+                    return redirect(reverse('startFundraiser:update_records',
+                            kwargs={
+                                'token': token,
+                                'pk':pk,
+                                'amount':amt,
+                            })
+                        )
+                except stripe.CardError as e:
+                    message.info(request, "Your card has been declined.")
+            else:
+                result = transact({
+                    'amount': amt,
+                    'payment_method_nonce': request.POST['payment_method_nonce'],
+                    'options': {
+                        "submit_for_settlement": True
+                    }
+                })
+
+                if result.is_success or result.transaction:
+                    entry_token =result.transaction.id
+                    '''
+                    return redirect(reverse('startFundraiser:update_records',
+                            kwargs={
+                                'token': result.transaction.id,
+                                'pk':pk,
+                                'amount':amt,
+                            })
+                        )
+                    '''
+                    campaign = get_object_or_404(Campaign, pk=pk)
+
+                    # create a transaction record
+                    transaction = Backers(backer=request.user,
+                                            campaign = campaign,
+                                            email = request.user.email,
+                                            token=entry_token ,
+                                            amount = amt,
+                                            )
+                    transaction.save()
+                    campaign.pledged = float(campaign.pledged) + float(amt)
+                    campaign.people_pledged = campaign.people_pledged + 1
+                    campaign.save()
+
+                    ## mail notification as funds receivd to the project #
+                    User = get_user_model()
+                    uname = request.user.username
+                    Funds =  amt
+                    project = campaign.campaign_Title
+                    Project_by = campaign.user
+                    mail_id = User.objects.get(username = Project_by).email
+
+                    subject = "Recived Funds"
+                    to = ['ruthala.shiva512@gmail.com',]
+                    to.append(mail_id)
+                    from_email = 'ruthala.shiva512@gmail.com'
+
+                    details = {
+                        'donar': uname,
+                        'amount': Funds,
+                        'reciver': Project_by,
+                        'project': project,
+                    }
+
+                    message = get_template('startFundraiser/mail.html').render(dict(details))
+                    msg = EmailMessage(subject, message, to=to, from_email=from_email)
+                    msg.content_subtype = 'html'
+                    msg.send()
+
+                    messages.info(request, "Thank you! Your purchase was successful!")
+                    #return HttpResponse("updated")
+                    #testing
+                    #return render(request, 'acknowledgement.html', details)
+                    return HttpResponse(f"{entry_token}<br>{pk}<br>{amt}<br>")
+
+                    #return redirect(reverse('startFundraiser:update_records',pk))
+                else:
+                    for x in result.errors.deep_errors:
+                        messages.info(request, x)
+                    return redirect(reverse('startFundraiser:checkout'+str(pk)))
+
+        context = {
+            'order': amt,
+            'client_token': client_token,
+            'STRIPE_PUBLISHABLE_KEY': publishKey
+        }
+
+        return render(request, 'startFundraiser/checkout.html', context)
+
+
+
+
+@login_required()
+def update_transaction_records(request,pk):
+    campaign = get_object_or_404(Campaign, pk=pk)
+
+    # create a transaction
+    transaction = Backers(backer=request.user,
+                            campaign = campaign,
+                            email = request.user.email,
+                            token=entry_token ,
+                            amount = amt,
+                            )
+    # save the transcation (otherwise doesn't exist)
+    transaction.save()
+    campaign.pledged = float(campaign.pledged) + float(amt)
+    campaign.people_pledged = campaign.people_pledged + 1
+    campaign.save()
+
+    # send an email to the customer
+    # look at tutorial on how to send emails with sendgrid
+    messages.info(request, "Thank you! Your purchase was successful!")
+    return HttpResponse("updated")
+    #return redirect(reverse('accounts:my_profile'))
+
+# django API
 class fundsListView(APIView):
     def get(self,request):
         fundings = Backers.objects.all()

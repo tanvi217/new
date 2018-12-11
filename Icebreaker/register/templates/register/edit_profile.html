@@ -17,19 +17,19 @@
   <title>profile</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
-<br><br><br>
-<hr>
+<br><br><br><br><br><br><br><br><br>
+
 <div class="container bootstrap snippet">
     <div class="row">
       {% if user.is_authenticated %}
   		<div class="col-sm-10"><h1><span> Hi {{ request.user|capfirst }} </span></h1></div>
       {% endif%}
-    	<div class="col-sm-2"><a href="/users" class="pull-right"><img title="Logo Icebreaker" class="img-circle img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Icebreaker_logo.svg"></a></div>
+    	<!--<div class="col-sm-2"><a href="/users" class="pull-right"><img title="Logo Icebreaker" class="img-circle img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Icebreaker_logo.svg"></a></div>-->
     </div>
     <div class="row">
   		<div class="col-sm-3"><!--left col-->

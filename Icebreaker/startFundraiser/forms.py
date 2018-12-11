@@ -108,7 +108,7 @@ class BackersForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'description', 'description2', 'body', 'order', 'slug']
+        fields = ['title', 'description']
 
 
 class createcomment(forms.ModelForm):

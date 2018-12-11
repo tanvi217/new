@@ -38,9 +38,11 @@
       <div class="btn-group">
          <button onclick="window.location='{% url 'startFundraiser:add_comment' pk=campaign1.id %}'" type="button" class="button button2" style="color: #d39e00"><span class="glyphicon glyphicon-edit"><a href="{% url 'startFundraiser:add_comment' campaign1.id %}" style="color: #d39e00"> Comments</a></span></button>
       </div>
+
        <div id="like-section">
                       {% include 'startFundraiser/like_section.html' %}
        </div>
+
       <br>
       <br>
       <div class="row">
@@ -59,7 +61,8 @@
       SUPPORT IT
       </span>&nbsp;
       </button>
-      {% endif %}
+      {% endif %}&nbsp&nbsp
+      <a href="https://api.whatsapp.com/send?phone=&text={{trends.image.url }} {{ trends.campaign_Title }} {{ trends.overview }}" data-toggle="tooltip" title="whatsapp share"><i class="fab fa-whatsapp fa-4x"></i></a>
    </div>
 </div>
 <br><br><br>
@@ -96,7 +99,7 @@
          <div class="card-body text-warning">
             <h5 class="card-title">Donate {{ reward.amount }}</h5>
             <p class="card-text">{{ reward.claimed }} of {{ reward.quantity }} claimed</p>
-            <a class="btn btn-success" href="{% url 'startFundraiser:claim' reward.id %}">
+            <a class="btn btn-success" href="{% url 'startFundraiser:checkout1' reward.id %}">
                <h4>Get this!</h4>
             </a>
          </div>

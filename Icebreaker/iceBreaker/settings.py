@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'djcelery',
+    'django_inlinecss',
     'widget_tweaks',
     'ckeditor',
     'ckeditor_uploader',
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'crispy_forms',
     'captcha',
+    'stripe',
 ]
 AUTHENTICATION_BACKENDS=[
     'social_core.backends.github.GithubOAuth2',

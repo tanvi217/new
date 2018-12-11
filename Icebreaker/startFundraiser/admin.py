@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Campaign, Faqs, Update, Post, comment, Backers, Reward
+from .models import Campaign, Faqs, Update, Post, comment, Backers, Reward ,RewardClaimed
 
 
 class CampaignAdmin(admin.ModelAdmin):
@@ -24,3 +24,4 @@ admin.site.register(Post)
 admin.site.register(comment)
 admin.site.register(Backers, BackersAdmin)
 admin.site.register(Reward)
+admin.site.register(RewardClaimed)

@@ -1,6 +1,6 @@
-{% extends 'startFundraiser/home.html' %}
+
 {% load staticfiles %}
-{% block content %}
+<!DOCTYPEhtml>
 <head>
   <title>Login V15</title>
   <meta charset="UTF-8">
@@ -30,9 +30,51 @@
   <link rel="stylesheet" type="text/css" href="{% static 'register/css/main.css' %}">
 
   <!--===============================================================================================-->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'startFundraiser/style.css' %}">
+  <link rel="shortcut icon" href="{%  static 'startFundraiser/favicon.ico' %}">
+  <title>{% block title %}IceBreaker{% endblock %}</title>
 
 </head>
+
 <body>
+  <header>
+     <div class="wrapper">
+        <nav>
+           <div class="logo"><a href="{% url 'startFundraiser:home' %}" class="logo-des">ice<strong>Breaker</strong></a></div>
+           <ul>
+              <li><a href="{% url 'startFundraiser:start_campaign' %}">Start Campaign</a></li>
+              <li><a href="{% url 'community:make_group' %}">Volunteer</a></li>
+              <li><a class="active" href="{% url 'startFundraiser:campaigns' %}">Explore</a></li>
+              <li><a class="active" href="{% url 'marketplace:products_blog' %}">Marketplace</a></li>
+              <li><a class="active" href="{% url 'community:view_group' %}">Communities</a></li>
+              <li class="nav-item" id="links"><a href="{% url 'startFundraiser:blog_post' %}">notifications</a></li>
+              <li><a class="active" href="{% url 'polls:query_view' %}">Contact Us</a></li>
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'register:user_logout' %}">Logout</a></li>
+              <li><a href="{% url 'register:edit_profile' %}">Howdy {{ request.user }}!</a></li>
+
+              {% else %}
+              <li><a href="{% url 'register:user_register' %}">SignUp</a></li>
+              <li><a href="{% url 'register:user_login' %}">Login</a></li>
+              {% endif%}
+           </ul>
+           {% block search %}{% endblock %}
+        </nav>
+        {% block bg_img %}{% endblock %}
+     </div>
+  </header>
+
 
   <div class="container">
       {% if form.errors %}
@@ -53,8 +95,9 @@
 
 
   <div class="limiter">
-    <div class="container-login100">
-      <div class="wrap-login100">
+    <div class="container-login100" >
+      <div class="wrap-login100" style="border-style: solid;border-color: Dodgerblue;">
+
         <div class="login100-form-title" style="background-color:Dodgerblue;">
           <span class="login100-form-title-1" >
             Sign In
@@ -83,10 +126,6 @@
 
           <div class="flex-sb-m w-full p-b-30">
             <div class="contact100-form-checkbox">
-              <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-              <label class="label-checkbox100" for="ckb1">
-                Remember me
-              </label>
 
               <div>
                 <a href="{% url 'register:user_register' %}" class="txt1">
@@ -101,12 +140,14 @@
 
               </div>
             </div>
-            &nbsp&nbsp&nbsp&nbsp
-
-            <input type="submit" value="login" class="btn btn-outline-success">
-
+          </div>
+            &nbsp
+            <br><br><br>
+          <center>
+            <button type="submit" value="login" class="btn btn-outline-success"style="font-size: 26px;" >login</button>
+          </center>
           </form>
-        </div>
+
         <center>
           <p> here you can login as ......... or .............. </p>
         </center>
@@ -114,11 +155,11 @@
         <div>
           <center>
             <a href="{% url 'social:begin' 'github' %}">
-              <button type="button" name="button" class="btn btn-primary">Github</button>
+              <button type="button" name="button" class="btn btn-primary" style="font-size: 20px;">Github</button>
             </a>
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             <a href="{% url 'social:begin' 'google-oauth2' %}">
-              <button type="button" name="button" class="btn btn-danger">Google+</button>
+              <button type="button" name="button" class="btn btn-danger" style="font-size: 20px;">Google+</button>
             </a>
           </center>
         </div>
@@ -144,5 +185,3 @@
     <script src="{% static 'register/js/main.js' %}"></script>
 
   </body>
-
-{% endblock %}

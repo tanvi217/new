@@ -91,7 +91,15 @@ class Reward(models.Model):
     delivery = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.campaign
+        return str(self.campaign)
+        
+class RewardClaimed(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    reward =  models.ForeignKey(Reward, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user)
+
 
 
 class Faqs(models.Model):
@@ -116,16 +124,14 @@ class Update(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=255, blank=True, null=True)
-    description = RichTextUploadingField(blank=True, null=True)
-    description2 = RichTextUploadingField(blank=True, null=True, config_name='special')
-    body = models.TextField(blank=True, null=True)
-    order = models.IntegerField(blank=True, null=True)
-    slug = models.SlugField(default='', blank=True)
+    title = models.CharField(max_length = 255, blank = True, null = True)
+    description = RichTextUploadingField(blank = True, null = True)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    #description2 = RichTextUploadingField(blank = True, null = True, config_name = 'special')
+    #body = models.TextField(blank = True, null = True)
+    #order = models.IntegerField(blank = True, null = True)
+    #slug = models.SlugField(default = '', blank = True)
 
-    def save(self):
-        self.slug = slugify(self.title)
-        super(Post, self).save()
 
     def __str__(self):
         return '%s' % self.title
@@ -148,5 +154,7 @@ class reply(models.Model):
 class Backers(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     backer = models.CharField(max_length=50)
+    email = models.EmailField(null = True)
     amount = models.FloatField(null=False, blank=False)
+    token = models.CharField(max_length=120, null = True)
     date_backed = models.DateTimeField(default=timezone.now)
