@@ -45,7 +45,6 @@
 
 
     <script>
-
       // In the following example, markers appear when the user clicks on the map.
       // The markers are stored in an array.
       // The user can then click an option to hide, show or delete the markers.
@@ -54,7 +53,6 @@
 	var z = 5;
       function initMap() {
         var haightAshbury = {lat: 20.46, lng: 78.66}
-
         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 5,
           center: haightAshbury,
@@ -63,36 +61,24 @@
 	map.addListener('zoom_changed', function() {
           z = map.getZoom();
         });
-
 	//document.getElementById('zoom').value = mapObject.getZoom();
 	var geocoder = new google.maps.Geocoder;
         var infowindow = new google.maps.InfoWindow;
         // This event listener will call addMarker() when the map is clicked.
 	// mapTypeId:google.maps.MapTypeId.HYBRID
-
 	 map.addListener('click', function(event) {
 	document.getElementById("address").value = "";
           addMarker(event.latLng, z);
          // map.setCenter(marker.getPosition());
-
-
 	gecodeLatLng(geocoder, map, infowindow, z);
         });
-
 	document.getElementById('submit1').addEventListener('click', function() {
           geocodeAddress(geocoder, map);
         });
-
-
-
-
-
       }
-
 	function gecodeLatLng(geocoder, map, infowindow, z) {
 	var la = document.getElementById('lat1').value;
 	var lo = document.getElementById('lon1').value;
-
 		var latlng = {lat: parseFloat(la), lng: parseFloat(lo)};
 		geocoder.geocode({'location': latlng}, function(results, status) {
 		  if (status === 'OK') {
@@ -108,15 +94,12 @@
 		    window.alert('Geocoder failed due to: ' + status);
 		  }
 		});
-
 	}
-
 	function geocodeAddress(geocoder, resultsMap) {
         var address = document.getElementById('address').value;
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
 		deleteMarkers();
-
             resultsMap.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
               map: resultsMap,
@@ -130,7 +113,6 @@
           }
         });
       }
-
       // Adds a marker to the map and push to the array.
 	//document.getElementById('zoom').value = mapObject.getZoom();
       function addMarker(location, z) {
@@ -143,7 +125,6 @@
 	  center: location,
 	  animation: google.maps.Animation.DROP,
         });
-
 	//a pop up on the marker for its location and coords
 	var infoWindow = new google.maps.InfoWindow({
                 content: 'Latitude: ' + location.lat() + '<br />Longitude: ' + location.lng() + '<br>Address: '
@@ -175,7 +156,6 @@
     </script>
 
    <!-- <script>
-
       // In the following example, markers appear when the user clicks on the map.
       // The markers are stored in an array.
       // The user can then click an option to hide, show or delete the markers.
@@ -184,7 +164,6 @@
 	var z = 10;
       function initMap() {
         var haightAshbury = {lat: 37.769, lng: -122.446};
-
         map = new google.maps.Map(document.getElementById('map'), {
           zoom: 10,
           center: haightAshbury,
@@ -198,27 +177,16 @@
         var infowindow = new google.maps.InfoWindow;
         // This event listener will call addMarker() when the map is clicked.
 	// mapTypeId:google.maps.MapTypeId.HYBRID
-
 	 map.addListener('click', function(event) {
 	document.getElementById("address").value = "";
           addMarker(event.latLng, z);
          // map.setCenter(marker.getPosition());
-
-
 	gecodeLatLng(geocoder, map, infowindow, z);
         });
-
-
-
-
-
-
       }
-
 	function gecodeLatLng(geocoder, map, infowindow, z) {
 	var la = document.getElementById('lat1').value;
 	var lo = document.getElementById('lon1').value;
-
 		var latlng = {lat: parseFloat(la), lng: parseFloat(lo)};
 		geocoder.geocode({'location': latlng}, function(results, status) {
 		  if (status === 'OK') {
@@ -234,9 +202,7 @@
 		    window.alert('Geocoder failed due to: ' + status);
 		  }
 		});
-
 	}
-
       // Adds a marker to the map and push to the array.
 	//document.getElementById('zoom').value = mapObject.getZoom();
       function addMarker(location, z) {
@@ -248,7 +214,6 @@
 	  zoom: z,
 	  center: location
         });
-
 	//a pop up on the marker for its location and coords
 	var infoWindow = new google.maps.InfoWindow({
                 content: 'Latitude: ' + location.lat() + '<br />Longitude: ' + location.lng() + '<br>Address: '
@@ -279,4 +244,4 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoxHIV4EUz3PsPOwB_ehuLLDu4OE0ELLc&callback=initMap">
     </script>
     -->
-   {% endblock %}
+{% endblock %}

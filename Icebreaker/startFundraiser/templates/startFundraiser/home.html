@@ -8,6 +8,7 @@
       <!-- meta tags -->
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
       <!-- Google fonts -->
@@ -16,6 +17,8 @@
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
       <!-- Custom CSS -->
       <link rel="stylesheet" href="{% static 'startFundraiser/style.css' %}">
       <link rel="shortcut icon" href="{%  static 'startFundraiser/favicon.ico' %}">
@@ -26,9 +29,8 @@
       <header>
          <div class="wrapper">
             <nav>
-               <div class="logo"><a href="{% url 'startFundraiser:home' %}" class="logo-des">ice<strong>Breaker</strong></a></div>
+               <div class="logo"><a href="{% url 'startFundraiser:home' %}" class="logo">ice<strong>Breaker</strong></a></div>
                <ul>
-                  <li><a href="{% url 'startFundraiser:start_campaign' %}">Start Campaign</a></li>
                   <li><a href="{% url 'community:make_group' %}">Volunteer</a></li>
                   <li><a class="active" href="{% url 'startFundraiser:campaigns' %}">Explore</a></li>
                   <li><a class="active" href="{% url 'marketplace:products_blog' %}">Marketplace</a></li>
@@ -133,7 +135,7 @@
                      <p id="class3">{{ most_liked.campaign_Tagline }}</p>
                      <div class="progress">
                         {% with per=most_liked.pledged|div:most_liked.goal|mul:100|floatformat %}
-                        <h4 class="progress-bar progress-bar-success" role="progressbar" style="width: {{ per }}%">{{ per }}% funded</h4>
+                        <h4 class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{ per }}%">{{ per }}% funded</h4>
                         {% endwith %}
                      </div>
                      <h2 class="class3">{{ most_liked.pledged }} raised of {{ most_liked.goal }}</h2>
@@ -146,16 +148,25 @@
       {% endblock %}
       <!-- End Top Fundraisers-->
 
+      <!---->
+      <!---->
+
       <!--Footer-->
       <section class="footer-sec">
          <footer class="footer">
-            <div class="row pt-5">
-               <div class="col-md-12 text-center">
-                  <p>
-                     Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                  </p>
-               </div>
-            </div>
+ 					<div class="wrapper">
+						<ul class="list-inline">
+							<li><a href="{% url 'startFundraiser:home' %}">Home</a></li>
+							<li><a href="{% url 'startFundraiser:campaigns' %}">Projects</a></li>
+							<li><a href="{% url 'marketplace:products_blog' %}">Marketplace</a></li>
+							<li><a href="{% url 'polls:query_view' %}">Contact Us</a></li>
+						</ul>
+							<a href="#" class="fa fa-facebook"></a>
+							<br>
+						<p>
+							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | </i> by iceBreaker
+						</p>
+					</div>
          </footer>
       </section>
 
