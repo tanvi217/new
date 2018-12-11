@@ -182,7 +182,7 @@
 {% if is_editable %}
 <div class="btn-group">
    <button onclick="window.location='{% url 'startFundraiser:campaign_edit' pk=campaign1.id %}'" type="button" class="button button1"><span class="glyphicon glyphicon-edit"style="color: whitesmoke; font-size: medium" > Edit</span></button>
-   {% if campaign1.pledged==0 %}
+   {% if campaign1.pledged == 0 %}
    <button onclick="window.location='{% url 'startFundraiser:campaign_delete' pk=campaign1.id %}'" type="button" class="button button2"><span class="glyphicon glyphicon-trash" style="color: whitesmoke; font-size: medium"> Delete</span></button>
    {% endif %}
 </div>
