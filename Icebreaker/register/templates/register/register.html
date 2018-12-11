@@ -1,9 +1,72 @@
-{% extends 'startFundraiser/base.html' %}
+{% extends 'startFundraiser/home.html' %}
+{% block title %}Sign Up{% endblock %}
 {% block content %}
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+{% load widget_tweaks %}
+  	<!-- HEADER -->
 
-    <input type="submit" value="register" class="btn btn-outline-success">
-  </form>
+<!-- ACTIONS -->
+
+<!-- LOGIN -->
+<br><br><br><br><br><br>
+<div class="container">
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+
+  <section id="login">
+    <div class="container" >
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-lg-5 mx-auto">
+          <div class="card">
+            <div class="card-header" >
+
+              <h1>Account SignUp</h1>
+            </div>
+            <form method="post">
+                		<center>
+			           		{% csrf_token %}
+
+										{%  for field in form %}
+
+                  		{{ field | add_class:"form-control" | attr:"size:20" }}<br><br>
+                		{% endfor %}
+
+				           <button type="submit" class="btn btn-outline-success" style="font-size: 24px;">Sign up</button>
+                   </center>
+			      </form>
+
+						<div>
+							<center>
+								<a href="{% url 'social:begin' 'github' %}">
+
+									<button type="button" name="button" class="btn btn-primary">Github</button>
+								</a>
+								&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+								<a href="{% url 'social:begin' 'google-oauth2' %}">
+									<button type="button" name="button" class="btn btn-danger">Google+</button>
+								</a>
+							</center>
+						</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!---------------------------------------------------------------->
+
 {% endblock %}

@@ -49,6 +49,13 @@ INSTALLED_APPS = [
     'testimony',
     'mathfilters',
     'crispy_forms',
+    'captcha',
+]
+AUTHENTICATION_BACKENDS=[
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'register.authentication.EmailAuthBackend',
 ]
 
 MIDDLEWARE = [
@@ -63,8 +70,8 @@ MIDDLEWARE = [
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'yagnakarthik100@gmail.com'
-EMAIL_HOST_PASSWORD = 'Karthik100%'
+EMAIL_HOST_USER = 'ruthala.shiva512@gmail.com'
+EMAIL_HOST_PASSWORD = 'Charan@01'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
@@ -83,6 +90,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
+
             ],
         },
     },
@@ -181,3 +191,14 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': 'codesnippet',
     }
 }
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '583325362406-eq68ddqmlcbbgc8efroq2gsqblf6aorc.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'y3J9xxStLn48N4DC5ba9ihFF'
+
+SOCIAL_AUTH_GITHUB_KEY = 'c4b98d42763ae00ed025'
+SOCIAL_AUTH_GITHUB_SECRET = '54e3b9a046cd91b7bdda30936c9236a5f5b82b09'
+
+
+RECAPTCHA_PUBLIC_KEY = '6Ldtk38UAAAAAAKvFYzqT7hsKCheERhhz_Dh4JuM'
+RECAPTCHA_PRIVATE_KEY = '6Ldtk38UAAAAAG9_BTTra0vpBF8i4w9ET9JCRsMR'
+NOCAPTCHA = True

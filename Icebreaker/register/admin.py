@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile
+from .models import Profile,Temp
 # Register your models here.
 '''
 class PostAdmin(admin.ModelAdmin):
@@ -16,3 +16,4 @@ class ProfileAdmin(admin.ModelAdmin):
 #admin.site.register(post, PostAdmin)
 
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Temp)
