@@ -1,4 +1,4 @@
-{% extends 'startFundraiser/base.html' %}
+{% extends 'startFundraiser/home.html' %}
 {% block content %}
 
   <form method="post">
@@ -6,7 +6,7 @@
     {{ form.as_p }}
     <small>
       <a href="{% url 'register:user_register' %}">Register </a>
-    
+
     </small><br>
     <input type="submit" value="login" class="btn btn-outline-success">
     <p> ----OR ----- </p>
