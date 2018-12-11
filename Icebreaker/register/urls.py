@@ -12,6 +12,7 @@ urlpatterns = [
     url('new_user_reg/', views.new_user_reg, name='new_user_reg'),
     url('profile/', views.edit_profile, name='edit_profile'),
     url('password/', views.change_password, name='change_password'),
+    url('api/', views.profileREST.as_view()),
     #url('social/', views.social, name='social'),
     #url('home/', views.home, name='home'),
 

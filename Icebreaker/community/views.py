@@ -7,6 +7,12 @@ from .models import GroupTable, MemberTable, CommentTable, UpdateTable
 import requests
 import json
 from datetime import datetime
+#
+from iceBreaker.serializer import CommunitySerializer,MemberSerializer,CommentSerializer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+
 
 
 
@@ -283,3 +289,40 @@ def profile_detail(request, u_id):
     content = GroupTable.objects.filter(founder=usr)
 
     return render(request, 'community/profile.html', {'content':content, 'usr':usr})
+
+class communityREST(APIView):
+    def get(self,request):
+        pro = GroupTable.objects.all()
+        serializer = CommunitySerializer(pro, many = True)
+        return Response(serializer.data)
+    def put(self,request):
+        serializer = CommunitySerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+class communityMemberREST(APIView):
+    def get(self,request):
+        pro = MemberTable.objects.all()
+        serializer = MemberSerializer(pro, many = True)
+        return Response(serializer.data)
+    def put(self,request):
+        serializer = MemberSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+class communitycommentREST(APIView):
+    def get(self,request):
+        pro = CommentTable.objects.all()
+        serializer = CommentSerializer(pro, many = True)
+        return Response(serializer.data)
+    def put(self,request):
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)

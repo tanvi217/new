@@ -1,4 +1,4 @@
-from .views import view_community, make_group, my_group, group_detail, group_edit, joined_group, profile_detail, update_detail, profile_list
+from .views import view_community, make_group, my_group, group_detail, group_edit, joined_group, profile_detail, update_detail, profile_list,communityREST,communityMemberREST,communitycommentREST
 from django.conf.urls import url
 
 app_name='community'
@@ -15,5 +15,7 @@ urlpatterns = [
     url(r'^(?P<u_id>[0-9]+)/updates/$', update_detail, name='update_detail'),  #
 
     #url(r'^page-not-found/$', page_not_found),  # done
+    url('capi/', communityREST.as_view()),
+    url('capim/', communityMemberREST.as_view()),
 
 ]

@@ -39,6 +39,12 @@ from django.contrib import messages
 ####
 from startFundraiser.models import Campaign
 from startFundraiser.forms import BackersForm
+###
+from iceBreaker.serializer import ProfileSerializer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+
 
 
 def account_activation_sent(request):
@@ -46,26 +52,30 @@ def account_activation_sent(request):
     return render(request, 'register/account_activation_sent.html')
 
 def user_login(request):
+
     if request.method == 'POST':
-        form = UserLoginForm(request.POST)
-        if form.is_valid():
-            username = request.POST['username']
-            password = request.POST['password']
+        try:
+            form = UserLoginForm(request.POST)
+            if form.is_valid():
+                username = request.POST['username']
+                password = request.POST['password']
 
-            user = authenticate(username=username, password=password)
+                user = authenticate(username=username, password=password)
 
-            if user:
-                if user.is_active:
-                    login(request, user,backend='django.contrib.auth.backends.ModelBackend')
-                    #return redirect('project:post_list')
-                    return redirect("http://127.0.0.1:8000/")
+                if user:
+                    if user.is_active:
+                        login(request, user,backend='django.contrib.auth.backends.ModelBackend')
+                        #return redirect('project:post_list')
+                        return redirect("http://127.0.0.1:8000/")
+
+                    else:
+                        return render(request, 'register/error.html')
 
                 else:
                     return render(request, 'register/error.html')
-
-            else:
-                return render(request, 'register/error.html')
-
+        except Exception as e:
+            print(e)
+            return render(request, 'register/error.html')
     else:
         form = UserLoginForm()
 
@@ -96,8 +106,11 @@ def user_register(request):
         if form.is_valid():
             new_user = form.save(commit=False)
             new_user.set_password(form.cleaned_data['password1'])
-            b = email_verify(form)
-            print(b)
+            try:
+                b = email_verify(form)
+                print(b)
+            except Exception as e:
+                print(e)
             username = form.data['username']
             first_name = form.data['first_name']
             last_name = form.data['last_name']
@@ -157,12 +170,15 @@ def new_user_reg(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        user_form = UserEditForm(data=request.POST or None, instance=request.user)
-        profile_form = ProfileEditForm(data=request.POST or None, instance=request.user.profile, files=request.FILES)
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            return render(request, "startFundraiser/home.html")
+        try:
+            user_form = UserEditForm(data=request.POST or None, instance=request.user)
+            profile_form = ProfileEditForm(data=request.POST or None, instance=request.user.profile, files=request.FILES)
+            if user_form.is_valid() and profile_form.is_valid():
+                user_form.save()
+                profile_form.save()
+                return render(request, "startFundraiser/home.html")
+        except Exception as e:
+            print(e)
 
     else:
 
@@ -212,3 +228,15 @@ def change_password(request):
     return render(request, 'register/chnage_password.html', {
         'form': form
     })
+
+class profileREST(APIView):
+    def get(self,request):
+        pro = Profile.objects.all()
+        serializer = ProfileSerializer(pro, many = True)
+        return Response(serializer.data)
+    def put(self,request):
+        serializer = ProfileSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)

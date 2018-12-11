@@ -9,6 +9,10 @@ td, th {
     text-align: left;
     padding: 8px;
 }
+th{
+  background-color: black;
+  color:white;
+}
 
 tr:nth-child(even) {
     background-color: #dddddd;
@@ -19,9 +23,7 @@ html {
 }
 body {
   font-family:"Times New Roman", Times, serif;
-  background-image: url("images/giphy.gif");
-  background-repeat: no-repeat,repeat;
-  background-size:cover;
+
 }
 a:hover {
     color: #F933FF;
@@ -29,8 +31,3 @@ a:hover {
 .navbar-brand {
   font-family: 'Sacramento', cursive;
 }
-body {
-    background-image: url("images/giphy.gif");
-    background-repeat: no-repeat,repeat;
-    background-size:cover;
-    }
