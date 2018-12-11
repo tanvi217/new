@@ -166,5 +166,26 @@
       <script type="text/javascript">
          $(".num").counterUp({delay:10,time:1000});
       </script>
+      <script type="text/javascript">
+          $(document).ready(function(event){
+            $(document).on('click','#like',function(event){
+              event.preventDefault();
+              var id = {{ campaign1.id }};
+              $.ajax({
+                type: 'POST',
+                url: '{% url "startFundraiser:like_camp" %}',
+                data: {'id':id, 'csrfmiddlewaretoken':'{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                  $('#like-section').html(response['form'])
+                  console.log($('#like-section').html(response['form']));
+                },
+                error: function(rs, e){
+                  console.log(rs.responseText);
+                },
+              });
+            });
+          });
+        </script>
    </body>
 </html>

@@ -29,11 +29,10 @@ class CampaignForm(forms.ModelForm):
     class Meta:
         model = Campaign
         fields = ['campaign_Title', 'campaign_Tagline', 'campaign_Category', 'country', 'city', 'overview', 'goal',
-                  'story', 'tags', 'campaign_Card_Image', 'image']
+                  'story', 'tags', 'image']
         widgets = {
             'campaign_Title': forms.TextInput(attrs={'required': True, 'placeholder': 'Title'}),
             'campaign_': forms.TextInput(attrs={'required': True}),
-            'image': forms.ClearableFileInput(attrs={'multiple': True}),
             'overview': forms.Textarea(attrs={'cols': 10, 'rows': 10})
         }
 
