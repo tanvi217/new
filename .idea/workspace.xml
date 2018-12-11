@@ -2190,21 +2190,21 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="291" />
-          <entry key="py" value="2" />
+          <entry key="html" value="382" />
+          <entry key="py" value="75" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="2" />
-          <entry key="Svelte" value="291" />
+          <entry key="Python" value="75" />
+          <entry key="Svelte" value="382" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/like_section.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="102">
@@ -2227,11 +2227,11 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="935">
-              <caret line="187" column="13" lean-forward="true" selection-start-line="187" selection-start-column="13" selection-end-line="187" selection-end-column="13" />
+            <state relative-caret-position="153">
+              <caret line="117" column="22" lean-forward="true" selection-start-line="117" selection-start-column="22" selection-end-line="117" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -2239,8 +2239,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="338" selection-start-line="337" selection-end-line="338" />
+            <state relative-caret-position="255">
+              <caret line="165" column="55" lean-forward="true" selection-start-line="165" selection-start-column="55" selection-end-line="165" selection-end-column="55" />
               <folding>
                 <element signature="e#0#84#0" expanded="true" />
               </folding>
@@ -2268,8 +2268,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="43" column="10" lean-forward="true" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
+            <state>
+              <caret lean-forward="true" />
             </state>
           </provider>
         </entry>
@@ -2290,11 +2290,11 @@
         <option value="$PROJECT_DIR$/Icebreaker/marketplace/templates/marketplace/edit_product.html" />
         <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/rewards.html" />
         <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/forms.py" />
-        <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/home.html" />
-        <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/views.py" />
         <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/createcomment.html" />
-        <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/detail.html" />
         <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/like_section.html" />
+        <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/detail.html" />
+        <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/views.py" />
+        <option value="$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/home.html" />
       </list>
     </option>
   </component>
@@ -2412,7 +2412,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23892617" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23892617" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -2426,7 +2426,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.11409396" side_tool="true" weight="0.32907802" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.88590604" visible="true" weight="0.32907802" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.88590604" visible="true" weight="0.3319149" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -2527,16 +2527,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="338" selection-start-line="337" selection-end-line="338" />
-          <folding>
-            <element signature="e#0#84#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/createcomment.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -2551,24 +2541,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/home.html">
+    <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/like_section.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="187" column="13" lean-forward="true" selection-start-line="187" selection-start-column="13" selection-end-line="187" selection-end-column="13" />
+        <state relative-caret-position="102">
+          <caret line="6" column="50" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="43" column="10" lean-forward="true" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
+        <state>
+          <caret lean-forward="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/like_section.html">
+    <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="50" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
+        <state relative-caret-position="255">
+          <caret line="165" column="55" lean-forward="true" selection-start-line="165" selection-start-column="55" selection-end-line="165" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#84#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Icebreaker/startFundraiser/templates/startFundraiser/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="117" column="22" lean-forward="true" selection-start-line="117" selection-start-column="22" selection-end-line="117" selection-end-column="22" />
         </state>
       </provider>
     </entry>
