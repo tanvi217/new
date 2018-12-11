@@ -14,4 +14,5 @@ class Question(models.Model):
 class Answer(models.Model):
     answer = models.TextField(max_length=300)
 
-
+    def __str__(self):
+        return self.answer

@@ -92,7 +92,7 @@ class Reward(models.Model):
 
     def __str__(self):
         return str(self.campaign)
-        
+
 class RewardClaimed(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reward =  models.ForeignKey(Reward, on_delete=models.CASCADE)
@@ -142,6 +142,8 @@ class comment(models.Model):
     date = models.DateTimeField(auto_now_add=True, null=True)
     author = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
     camp = models.ForeignKey(Campaign, default=None, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.content
 
 
 class reply(models.Model):
@@ -149,6 +151,8 @@ class reply(models.Model):
     comment = models.ForeignKey(comment, default=None, null=True, on_delete=models.CASCADE)
     author = models.ForeignKey(User, default=None, null=True, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True, null=True)
+    def __str__(self):
+        return self.date
 
 
 class Backers(models.Model):

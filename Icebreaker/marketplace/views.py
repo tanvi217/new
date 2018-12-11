@@ -231,7 +231,7 @@ def checkout(request, **kwargs):
                 msg.send()
 
                 messages.info(request, "Thank you! Your purchase was successful!")
-                return HttpResponse(f"{entry_token}")
+                return HttpResponse("Thank you! Your purchase was successful!")
             else:
                 for x in result.errors.deep_errors:
                     messages.info(request, x)

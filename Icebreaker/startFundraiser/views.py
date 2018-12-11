@@ -565,7 +565,7 @@ def checkout(request, pk, **kwargs):
                     #return HttpResponse("updated")
                     #testing
                     #return render(request, 'acknowledgement.html', details)
-                    return HttpResponse(f"{entry_token}<br>{pk}<br>{amt}<br>")
+                    return HttpResponse("Thank you! Your purchase was successful!")
 
                     #return redirect(reverse('startFundraiser:update_records',pk))
                 else:
