@@ -18,7 +18,7 @@ from rest_framework import status
 
 
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
+@login_required(login_url="/register/login/")
 def view_community(request):
     if request.method == 'POST':
 
@@ -29,7 +29,7 @@ def view_community(request):
         elif address != '' and title == '':
             info = GroupTable.objects.filter(address__icontains=address)
         elif address != '' and title != '':
-            info = GroupTable.objects.filter(email__icontains=address, username__icontains=title)
+            info = GroupTable.objects.filter(address__icontains=address, title__icontains=title)
         else:
             info = GroupTable.objects.all()
         c = info.count()
@@ -61,7 +61,7 @@ def make_group(request):
 
 
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
+@login_required(login_url="/register/login/")
 def my_group(request):
     if request.method == 'POST':
         content = GroupTable.objects.filter(founder=request.user)
@@ -87,14 +87,14 @@ def my_group(request):
         return render(request, 'community/my-group.html', {'content':content, 'usr':usr,'count':count})
 
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
+@login_required(login_url="/register/login/")
 def joined_group(request):
     content = MemberTable.objects.filter(
         user=request.user
     ).only("group")
     return render(request, 'community/joined-group.html', {'content':content})
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
+@login_required(login_url="/register/login/")
 def profile_list(request):
     if request.method == 'POST':
         search = request.POST['search']
@@ -116,7 +116,7 @@ def profile_list(request):
         return render(request, 'community/all-profiles.html', {'users':users, 'c':c,})
 
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
+@login_required(login_url="/register/login/")
 def update_detail(request, u_id):
 
     group1 = GroupTable.objects.filter(pk=u_id)
@@ -157,7 +157,7 @@ def update_detail(request, u_id):
     return render(request, 'community/update-detail.html', {'content': content, 'group': group, 'c': c})
 
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
+@login_required(login_url="/register/login/")
 def group_detail(request, g_id):
     conten = GroupTable.objects.filter(pk=g_id)
     if conten.count() == 0:
@@ -226,7 +226,7 @@ def group_detail(request, g_id):
 
 
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
+@login_required(login_url="/register/login/")
 def group_edit(request, g_id):
     if request.method == 'POST':
         title = request.POST['title']
@@ -261,7 +261,7 @@ def group_edit(request, g_id):
             else:
                 return render(request, 'community/nopage.html', {})
 
-@login_required(login_url="http://127.0.0.1:8000/register/login/")
+@login_required(login_url="/register/login/")
 def profile_detail(request, u_id):
     #no need for filter and
     usr = User.objects.filter(pk=u_id)
