@@ -207,14 +207,10 @@ def validate_start_campaign(start, end, file_type):
     duration = end - start
     delta = int(duration.days)
     print(delta)
-    print(start)
-    print(start < datetime.date.today())
     if delta > 40 or delta < 7:
         error_message['duration'] = 'Check the campaign duration'
     if file_type not in IMAGE_FILE_TYPES and file_type != 'empty':
         error_message['image']: 'Image file must be PNG, JPG, or JPEG'
-    if start < datetime.date.today():
-        error_message['startDate']: 'Re-enter the start date to a future date'
 
     return error_message
 

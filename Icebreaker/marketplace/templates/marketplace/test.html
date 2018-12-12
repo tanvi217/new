@@ -14,17 +14,21 @@
         color: yellow;
       }
 
-      .page-footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
+      body{
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      main{
+        flex: 1 0 auto;
       }
     </style>
   </head>
 
   <body>
     <!--navbar-->
+    <header>
   <div class="navbar-fixed">
     <ul id="dropdown1" class="dropdown-content">
       <li><a style="color:blue" href="{% url 'register:user_logout' %}">Logout</a></li>
@@ -58,6 +62,7 @@
       </div>
     </nav>
   </div>
+</header>
     {% block content%}
       <main>
       </main>
@@ -69,7 +74,7 @@
             <div class="row center">
               <div class="col l12 s12">
                 <a href="#" class="black-text">Home</a>
-                <a href="#" class="black-text">Home</a>
+                <a href="{% url 'messenger' %}" class="black-text">facebook</a>
               </div>
             </div>
             <div class="row center">

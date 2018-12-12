@@ -60,7 +60,8 @@
       </span>&nbsp;
       </button>
       {% endif %}&nbsp&nbsp
-      <a href="https://api.whatsapp.com/send?phone=&text={{ campaign1.campaign_Title }} <br> {{ campaign1.overview }}" data-toggle="tooltip" title="whatsapp share"><i class="fab fa-whatsapp fa-4x"></i></a>
+           <a href="https://api.whatsapp.com/send?phone=+91 9121587454&text={{ campaign1.campaign_Title }} {{ campaign1.overview }}" data-toggle="tooltip" title="whatsapp share"><i class="fab fa-whatsapp fa-4x"></i></a>
+
    </div>
 </div>
 <br><br><br>
@@ -111,7 +112,7 @@
 <ul class="nav nav-tabs">
    <li >
       <a data-toggle="tab" href="#comments">
-         <h3>COMMENTS <span class="badge">{{ campaign1.faqs_set.count }}</span></h3>
+         <h3>COMMENTS <span class="badge">{{ campaign1.comment_set.count }}</span></h3>
       </a>
    </li>
    <li >
