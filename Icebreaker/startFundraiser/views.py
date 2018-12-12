@@ -172,11 +172,12 @@ def index(request):
         return render(request, 'startFundraiser/campaigns.html', {'projects': projects})
 
 
+
 def home(request):
     campaign_status()
     camp_count = Campaign.objects.count()
-    if camp_count != 0:
-        most_liked = Campaign.objects.order_by('-likes', '-pledged')[0]
+    if camp_count >= 3:
+        most_liked = Campaign.objects.order_by('-likes', '-pledged')[0:3]
         return render(request, 'startFundraiser/home.html', {'most_liked': most_liked, 'camp_count': camp_count})
     return render(request, 'startFundraiser/home.html')
 
