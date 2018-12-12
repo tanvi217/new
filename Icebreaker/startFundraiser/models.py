@@ -92,6 +92,9 @@ class Reward(models.Model):
 
     def __str__(self):
         return str(self.campaign)
+    def check_reward(self):
+        return '%s' % self.perks
+
 
 class RewardClaimed(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -99,6 +102,8 @@ class RewardClaimed(models.Model):
 
     def __str__(self):
         return str(self.user)
+    def check_rewardclaimed(self):
+        return '%s' % self.reward
 
 
 
@@ -112,6 +117,12 @@ class Faqs(models.Model):
 
     def __str__(self):
         return self.question
+
+    def check_faq(self):
+        return '%s' % self.question
+
+    class Meta:
+        verbose_name_plural = "faqs"
 
 
 class Update(models.Model):
@@ -145,6 +156,9 @@ class comment(models.Model):
     def __str__(self):
         return self.content
 
+    def check_comment(self):
+        return '%s' % self.content
+
 
 class reply(models.Model):
     content = models.TextField(max_length=1000)
@@ -162,3 +176,5 @@ class Backers(models.Model):
     amount = models.FloatField(null=False, blank=False)
     token = models.CharField(max_length=120, null = True)
     date_backed = models.DateTimeField(default=timezone.now)
+    def check_backer(self):
+        return '%s' % self.backer

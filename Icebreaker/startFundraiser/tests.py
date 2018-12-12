@@ -6,7 +6,7 @@ from PIL import Image
 from django.core.files import File
 from .forms import CampaignForm, FaqsForm
 from django.contrib.auth.models import User
-from .models import Campaign, Faqs, comment
+from .models import Campaign, Faqs, comment, Reward, Backers, RewardClaimed
 
 
 class CampaignModelTest(TestCase):
@@ -36,6 +36,9 @@ class Modeltest(TestCase):
             start_Date=datetime.date.today(),
         )
         Faqs.objects.create(campaign=campaign)
+        reward = Reward.objects.create(campaign=campaign, amount=1000.00, perks='Thank-you Cards')
+        RewardClaimed.objects.create(user=user, reward=reward)
+        Backers.objects.create(backer='Tanvi', campaign=campaign, amount=1000.00)
         comment.objects.create(content='Hey', camp=campaign, author=user)
 
     def test_faq(self):
@@ -45,3 +48,15 @@ class Modeltest(TestCase):
     def test_comment(self):
         comments = comment.objects.get(id=1)
         self.assertEquals(comments.check_comment(), "Hey")
+
+    def test_reward(self):
+        reward = Reward.objects.get(id=1)
+        self.assertEquals(reward.check_reward(), "Thank-you Cards")
+
+    def test_backers(self):
+        backer = Backers.objects.get(id=1)
+        self.assertEquals(backer.check_backer(), "Tanvi")
+
+    def test_rewardclaimed(self):
+        claimed = RewardClaimed.objects.get(id=1)
+        self.assertEquals(claimed.check_rewardclaimed(), "My campaign title")
