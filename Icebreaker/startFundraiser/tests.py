@@ -1,72 +1,47 @@
-from django.test import TestCase, Client
-from .models import *
+import datetime
 
-class TestUrls(TestCase):
-
-    def test_all_campaigns_url(self):
-        response = self.client.get('/startfundraiser/all_campaigns/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_campaigns_creative_url(self):
-        response = self.client.get('/startfundraiser/campaigns/creative/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_campaigns_social_url(self):
-        response = self.client.get('/startfundraiser/campaigns/social/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_campaigns_tech_url(self):
-        response = self.client.get('/startfundraiser/campaigns/tech/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_index_url(self):
-        response = self.client.get('/startfundraiser/index/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_posts_url(self):
-        response = self.client.get('/startfundraiser/posts/')
-        self.assertEqual(response.status_code, 200)
-
- #models testing
+from django.test import TestCase
+from django.contrib.auth import get_user_model
+from PIL import Image
+from django.core.files import File
+from .forms import CampaignForm, FaqsForm
+from django.contrib.auth.models import User
+from .models import Campaign, Faqs, comment
 
 
-class TestCampaignModels(TestCase):
-    def test_campaign_title_representation(self):
-        campaign_title = Campaign(campaign_Title="My entry title")
-        self.assertEqual(str(campaign_title), campaign_title.campaign_Title)
+class CampaignModelTest(TestCase):
+
+    def test_string_representation(self):
+        campaign = Campaign(campaign_Title="My campaign title")
+        self.assertEqual(str(campaign), campaign.campaign_Title)
+
+    def test_verbose_name_plural(self):
+        self.assertEqual(str(Campaign._meta.verbose_name_plural), "campaigns")
 
 
-class TestFaqsModels(TestCase):
-    def test_question_representation(self):
-        question = Faqs(question="")
-        self.assertEqual(str(question), question.question)
+class Modeltest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        user = User.objects.create(username='tanviagarwal', password='icebreaker')
+        campaign = Campaign.objects.create(
+            user=user,
+            campaign_Title="My campaign title",
+            campaign_Tagline="My campaign tagline",
+            campaign_Category='comics',
+            city='Chennai',
+            overview="Overview",
+            image="https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwiTlY2u-JjfAhXZWisKHTnKCT8QjRx6BAgBEAU&url=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3AGold_Star.svg&psig=AOvVaw0JI7KK1S6TJd9tHMnhExIc&ust=1544657665045761",
+            goal=10000.00,
+            end_Date=(datetime.date.today() + datetime.timedelta(weeks=2)),
+            start_Date=datetime.date.today(),
+        )
+        Faqs.objects.create(campaign=campaign)
+        comment.objects.create(content='Hey', camp=campaign, author=user)
 
+    def test_faq(self):
+        faq = Faqs.objects.get(id=1)
+        self.assertEquals(faq.check_faq(), "What are you raising funds for?")
 
-class TestUpdateModels(TestCase):
-    def test_text_title_representation(self):
-        text = Update(text="My entry title")
-        self.assertEqual(str(text), text.text)
-
-
-class TestPostModels(TestCase):
-    def test_title_representation(self):
-        title = Post(title="My entry title")
-        self.assertEqual(str(title), title.title)
-
-
-class TestcommentModels(TestCase):
-    def test_content_representation(self):
-        content = comment(content="My entry title")
-        self.assertEqual(str(content), content.content)
-
-
-class TestreplyModels(TestCase):
-    def test_date_representation(self):
-        date = reply(date="12/12/2018")
-        self.assertEqual(str(date), date.date)
-
-
-class TestBackersModels(TestCase):
-    def test_amount_representation(self):
-        amount = Backers(amount="1.02")
-        self.assertEqual(str(amount), amount.amount)
+    def test_comment(self):
+        comments = comment.objects.get(id=1)
+        self.assertEquals(comments.check_comment(), "Hey")
